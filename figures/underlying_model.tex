@@ -1,0 +1,17 @@
+
+	\tikz{
+		% nodes
+		\node[obs] (xstar) {$x$};%
+		\node[latent, above=of xstar] (thetastar) {$\theta$};%
+		\node[latent, above=of thetastar, xshift = 1cm] (tau) {$\tau$}; %
+		\node[latent, above=of thetastar, xshift = -1cm] (theta0) {$\theta_0$}; %
+		\node[const, left=of xstar] (sigma) {$\sigma$}; %
+		% plate
+		\plate [inner sep = .5cm]  
+		    {sampling} 
+		    {(sigma)(thetastar)(xstar)} 
+		    {}; 
+		% edges
+		\edge {theta0, tau} {thetastar} 
+		\edge {thetastar, sigma} {xstar} 
+	}

@@ -1,0 +1,2 @@
+* Table numbers and text numbers must agree.
+* check top left plot of Figure 4?

@@ -1,0 +1,31 @@
+\tikz{
+	
+	% nodes
+	\node[obs] (xstar) {$x$};%
+	\node[latent, above=of xstar] (thetastar) {$\theta$};%
+	\node[latent, above=of thetastar, xshift = -1cm, yshift = .5cm] (theta0) {$\theta_0$}; %
+	\node[const, left=of xstar] (sigma) {$\sigma$}; %
+	\node[latent, above=of thetastar, xshift = 1cm, yshift = .5cm] (tau) {$\tau$}; %
+	\node[obs, below=of xstar] (u) {$u$}; %
+	\node[latent, right=of xstar] (Z) {$Z$}; %
+	\node[obs, below=of u] (s) {$s$}; %
+	\node[latent, right=of tau] (pi) {$\pi$};
+	
+	% plates
+	\plate [inner sep = .5cm, dashed]
+	{selection} 
+	{(xstar)(u)} 
+	{}; 
+	
+	\plate [inner sep = .5cm] 
+	{sampling} 
+	{(sigma)(thetastar)(xstar)(selection)(u)(Z)(s)} 
+	{};
+	
+	% edges
+	\edge {theta0,tau} {thetastar} 
+	\edge {thetastar,sigma} {xstar} 
+	\edge {sigma, xstar} {u}
+	\edge {u,Z} {s} 
+	\edge {pi} {Z} 
+}

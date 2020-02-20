@@ -1,0 +1,19 @@
+\tikz{
+	
+	% nodes
+	\node[obs] (s) {$s$};%
+	\node[obs, above=of s] (x) {$x$};%
+	\node[obs, above=of x] (theta) {$\theta$}; %
+	
+	% plates
+	\plate [inner sep = .5cm, dashed]
+	{selection} 
+	{(x)} 
+	{}; 
+	
+	
+	% edges
+	\edge {theta} {x} 
+	\edge {x} {s} 
+	
+}

@@ -1,0 +1,639 @@
+% for biometrics
+%\documentclass[useAMS,usenatbib,referee]{biom}
+
+%¤ for arXiv
+\documentclass[preprint, authoryear]{elsarticle}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{import}
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
+
+\makeatletter
+\def\ps@pprintTitle{%
+ \let\@oddhead\@empty
+ \let\@evenhead\@empty
+ \def\@oddfoot{}%
+ \let\@evenfoot\@oddfoot}
+\makeatother
+
+\theoremstyle{plain}
+\newtheorem{theorem}{\protect\theoremname}
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{\protect\examplename}
+\providecommand{\examplename}{Example}
+\providecommand{\theoremname}{Theorem}
+%% end for arxiv
+
+\usepackage{multirow, amssymb, amsmath, graphicx, arydshln, url}
+\usepackage{algorithm, algorithmicx, algpseudocode}
+\usepackage[T1]{fontenc}
+\usepackage{natbib}
+
+\def\bSig\mathbf{\Sigma}
+\newcommand{\VS}{V\&S}
+\newcommand{\tr}{\mbox{tr}}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{lem}[theorem]{Lemma}
+\newtheorem{thm}[theorem]{Theorem}
+
+\providecommand{\tabularnewline}{\\}
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}
+\providecommand{\algorithmname}{Algorithm}
+\floatname{algorithm}{\protect\algorithmname}
+%%%% for biometrics
+% \title[Modelling publication bias and p-hacking]{Modelling publication bias and p-hacking}
+
+% \author
+% {Jonas Moss$^{*}$\email{jonasmgj@math.uio.no} and
+% Riccardo De Bin\\
+% Department of Mathematics, University of Oslo, Moltke Moes vei 35, 0851 Oslo, Norway}
+%%¤¤ end for biometrics
+
+\begin{document}
+
+%%%% for arXiv
+\begin{frontmatter}
+\title{Modelling publication bias and p-hacking}
+\author{Jonas Moss}
+\ead{jonasmgj@math.uio.no}
+\author{Riccardo De Bin}
+\address{Department of Mathematics, University of Oslo, PB 1053, Blindern, NO-0316, Oslo, Norway}
+\begin{abstract}
+Publication bias and \emph{p}-hacking are two well-known phenomena that strongly affect the scientific literature and cause severe problems in meta-analysis studies. Due to these phenomena, the assumptions of meta-analyses are seriously violated and the results of the studies cannot be trusted. While publication bias is almost perfectly captured by the model of Hedges, \emph{p}-hacking is much harder to model and no definitive solution has been found yet. In this paper we propose to model both publication bias and \emph{p}-hacking with selection models. We derive some properties for these models, and we contrast them both formally and via simulations. Finally, two real data examples are used to show how the models work in practice.
+\end{abstract}
+\end{frontmatter}
+%%%% end for arXiv
+
+%%%% for biometrics
+
+% \date{{\it Received Month} 20XX. {\it Revised Month} 20XX.  {\it
+% Accepted Month} 20XX.}
+
+% \pagerange{\pageref{firstpage}--\pageref{lastpage}} 
+% \volume{XX}
+% \pubyear{20XX}
+% \artmonth{Month}
+
+% \doi{10.1111/j.1541-0420.2005.00454.x}
+
+% \label{firstpage}
+
+% \begin{abstract}
+% Publication bias and \emph{p}-hacking are two well-known phenomena that strongly affect the scientific literature and cause severe problems in meta-analysis studies. Due to these phenomena, the assumptions of meta-analyses are seriously violated and the results of the studies cannot be trusted. While publication bias is almost perfectly captured by the model of Hedges, \emph{p}-hacking is much harder to model and no definitive solution has been found yet. In this paper we propose to model both publication bias and \emph{p}-hacking with selection models. We derive some properties for these models, and we contrast them both formally and via simulations. Finally, two real data examples are used to show how the models work in practice.
+% \end{abstract}
+
+% \begin{keywords}
+% File drawer problem; Fishing for significance; Questionable research practices, Selection bias.
+% \end{keywords}
+
+% \maketitle
+
+%%¤¤ end for biometrics
+
+\section{Introduction}
+
+Meta-analyses are powerful tools for statistical analysis. As the name suggests (the Greek \emph{meta} meaning ``after''), they consist in combining information from existing studies to better evaluate a quantity of interest, for example the effect of a specific drug or therapy. Being able to aggregate information from multiple studies generally means higher statistical power, higher accuracy in estimation and greater reproducibility. Unfortunately, it is not always possible to believe in the results of meta-analyses, because some model assumptions may be seriously violated. In particular, a meta-analysis must not be based on a biased selection of studies, and cannot include biased results. Publication bias \citep{sterling1959publication} and \emph{p}-hacking \citep{simmons2011false} are the most common phenomena that violate these assumptions. 
+
+Publication bias, also known as \emph{file drawer problem} \citep[see, e.g.,][]{iyengar1988selection} denotes that phenomenon for which a study with a smaller \emph{p}-value is more likely to be published than a study with a higher \emph{p}-value. Publication bias is a well known issue, and several approaches have been proposed to tackle it. Two famous examples are the trim-and-fill \citep{duval2000trim} and fail-safe $N$ \citep{becker2005failsafe} methods. Despite being proposed by statisticians, neither of them are \emph{bona fide} statistical models with likelihoods and properly motivated estimation strategies. From a statistical point of view, the most important class of models which are used to deal with publication bias are selection models. They were first studied by \citet{hedges1984estimation} for $F$-distributed variables with a cut-off at $0.05$, and extended to the setting of $t$-values by \citet{iyengar1988selection}. \citet{hedges1992modeling} proposed a random effects publication bias model with more than one cut-off, while \citet{citkowicz2017parsimonious} used beta distributed weights.
+
+Publication bias is a well-known problem in several research area, and therefore various approaches to solve the issue have been also proposed outside the statistical literature. Hailing from economics, the models PET and PET-PEESE \citep{stanley2014meta,stanley2017limitations} are two models based on linear regression and an approximation of the selection mechanism based on the inverse Mill's ratio. From psychology, the \emph{p}-curve of \citet{simonsohn2014p} is a method that only looks at significant \emph{p}-values and judges whether their distribution shows sign of being produced by studies with sufficiently high power. The \emph{p}-curve for estimation \citep{simonsohn2014} is a fixed effect selection model with a significance cut-off at $0.05$ estimated by minimizing the Kolmogorov-Smirnov distance \citep{mcshane2016adjusting}. Another method from the psychology literature is \emph{p}-uniform \citep{van2015meta}, which is similar to the \emph{p}-curve. A recent study by \citet{carter2019correcting} compared several approaches and showed that the selection model works better than the others. Nevertheless, not even the winner method works really well in every considered scenario. For more information on publication bias and a good review of large part of these methods we refer to the book by \citet{rothstein2006publication}.
+
+In contrast, \emph{p-}hacking, sometimes also called \emph{questionable research practices} \citep{Sijtsma2016} and \emph{fishing for significance} \citep{Boulesteix2009}, occurs when the authors of a study manipulate results into statistical significance. \emph{p}-hacking can be done at the experimental stage, using for example optional stopping, or at the analysis stage, for instance by changing models or dropping out participants. A large number of examples of \emph{p}-hacking can be found in \citet{simmons2011false}. While publication bias is almost perfectly captured by selection models such as that of Hedges \citeyearpar{hedges1992modeling}, \emph{p}-hacking is much harder to model. The aforementioned \emph{p}-curve approach by \citet{simonsohn2014p} has been used for \emph{p}-hacking as well, but it has been shown to be not reliable \citep{BrunsIoannidis2016}. Here we advocate the selection model approach and propose to use it to model both publication bias and \emph{p}-hacking. We derive some properties for these models, arguing that they are best estimated by using Bayesian methods. 
+
+The paper is organized as follows: In Section \ref{sect:models} we define the framework and introduce the models, which are analysed and contrasted in Section \ref{sect:differences}. Further comparisons are presented through simulations (Section \ref{sect:simulations}) and real data examples (Section \ref{sect:examples}). Finally, some concluding remarks are contained in Section \ref{sect:conclusions}.
+
+
+
+\section{Models}\label{sect:models}
+
+\subsection{Framework}
+The main ingredient of a meta-analysis is a collection of exchangeable statistics $x_{i}$. Each statistic $x_{i}$ has density $f^{\star}\left(x_{i};\theta_{i},\eta_{i}\right)$, where $\eta_i$ is a known or unknown nuisance parameter and $\theta_{i}$ is an unknown parameter we wish to make inference on. This paper is about the fact that the true data-generating model $f^{\star}\left(x_{i};\theta_{i},\eta_{i}\right)$ is often not what it \emph{ideally} should have been, such as a normal density. It has been instead transformed into something else by the forces of publication bias and \emph{p}-hacking. Our goal is to understand what it has been transformed into, and how we can estimate $\theta_{i}$ accordingly. The publication bias model of \citet{hedges1992modeling,iyengar1988selection} and the soon-to-be introduced \emph{p}-hacking model are models that transform the underlying densities, denoted by $f^{\star}\left(x_{i};\theta_{i},\eta_{i}\right)$, into new densities, $f_{i}\left(x_{i};\theta_{i},\eta_{i}\right)$. The underlying densities will usually be normal, but they do not have to. The theoretical discussion in this paper will not enforce normality anywhere, but all examples of models are based on underlying normal distributions. We only require the dependencies on a parameter of interest $\theta_{i}$ \emph{and} that statistical inference on $\theta_{i}$ is the goal of the analysis.
+
+The parameter of interest $\theta_{i}$ is typically an \emph{effect size}, such as a standardized mean difference. In a fixed effects meta-analysis, $\theta_{i}=\theta$ for all $i$. In a random effects meta-analysis, $\theta_{i}$ is drawn from an effect size distribution $p\left(\theta\right)$ common to all $i$, and the goal of the study is often to make inference on the parameters of the effect size distribution, for example on the mean $\theta_{0}$ and the standard deviation $\tau$ when $\theta \sim N\left(\theta_{0},\tau\right)$. If we marginalize away $\theta_{i}$ we will end up with a density on the form $f\left(x_{i}; \theta_{0},\sqrt{\sigma_{i}^{2}+\tau^{2}}\right)$, assuming $x_{i}$ is also from a normal distribution with standard deviation $\sigma_{i}$ (i.e., $\eta_i = \sigma_i$). This is possible in our framework, but it turns out that an important property of the publication bias model gets lost. Marginalizing out the $\theta_{i}$s can mask the fact that the selection mechanism in the publication bias has an effect \emph{both} on the effect size distribution and the individual densities $f_{i}\left(x_{i};\theta_i, \sigma_i\right)$.
+
+Here we will use Bayesian methods for estimation, with which it is natural to sample and obtain posteriors for each $\theta_{i}$. While a frequentist approach is in theory possible, it may lead to poor results. As noted by \citet[Appendix, 1]{mcshane2016adjusting}, the one-sided random effects models have ridges in their likelihood, which may make non-regularized estimates imprecise. In particular, it can be proved \citep{Moss2019} that there are no confidence sets of guaranteed finite size for $\theta_{0}$ and $\tau$ in the one-sided normal random effect models, for \emph{any} coverage $1-\alpha$. This is problematic for two reasons: (i) It would be useless to report a confidence set for $\tau^{2}$ like $\left[0.5,\infty\right)$, as no one would be ``confident'' about an infinite value for that parameter; (ii) the automatic confidence sets procedures that are guaranteed to yield finite confidence set of some positive nominal coverage, such as bootstrapped confidence sets, likelihood-ratio based confidence sets, and subsampling confidence sets \emph{never} have true coverage greater than $0$ \citep[see][]{gleser996bootstrap, Moss2019}. The role of priors in the Bayesian approach here is to force the estimates away from highly implausible areas; ad hoc penalization or bias corrections would be necessary for frequentist methods to work well.
+
+
+
+\subsection{The Publication Bias Model} \label{subsect:publicationBias}
+
+Imagine the following \textbf{Publication Bias Scenario}:
+\begin{quote}
+Alice is an editor who receives a study with a \emph{p}-value $u$. She knows her journals will suffer if she publishes many null-results, so she is disinclined to publish studies with large \emph{p}-values. Still, she will publish any result with some \emph{p}-value-dependent probability $w\left(u\right)$. Every study you will ever read in Alice's journal has survived this selection mechanism, the rest are lost forever.
+\end{quote}
+In this story, the underlying model $f^{\star}\left(x_{i}\mid\theta_{i},\eta_{i}\right)$
+is transformed into a \emph{publication bias model}
+\begin{equation}
+f\left(x_{i}\mid\theta_{i},\eta_{i}\right)\propto f^{\star}\left(x_{i}\mid\theta_{i},\eta_{i}\right)w\left(u\right)\label{eq:Publication bias model}
+\end{equation}
+by the selection probability $w\left(u\right)$. Here $u$ is a \emph{p}-value that depends on $x_{i}$ and maybe something else, such as the standard deviation of $x_{i}$, but does not depend on $\theta_{i}$. It cannot depend on $\theta_{i}$ since the editor has no way of knowing the parameter $\theta_{i}$; if she did, she would not have to look at the \emph{p}-values at all. It might depend on other quantities modelled by $\eta_{i}$ though, if $\eta_{i}$ is known to the editor. The normalizing constant of model \eqref{eq:Publication bias model} is finite for any probability $w(u)$, hence $f$ is a \emph{bona fide} density.
+
+An argument against the Publication Bias Scenario is that publication bias does not act only through \emph{p}-values, but also through other features of the study such as language \citep{egger1998meta}
+and originality \citep{callaham1998positive}. While this is true, the Publication Bias Scenario seems to completely capture the idea of \emph{p}-value based publication bias. Moreover, the \emph{p}-value-based publication bias is far more relevant to meta-analysis than the other sources of bias mentioned above. Even if other sources of publication bias exist, maybe acting through $x_{i}$ but not its \emph{p}-value, publication bias based on \emph{p}-values is a universally recognized problem, and a good place to start.
+
+The kind of model sketched here is almost the same as the one of \citet{hedges1992modeling}, with the sole exception that \citet{hedges1992modeling} does not require $w(u)$ to be a probability (the only requirement is that the integral of $f^{\star}\left(x_{i}\mid\theta_{i},\eta_{i}\right)w\left(u\right)$ is finite, which can happen without $w(u)$ being a probability). We demand it because the highly intuitive \emph{Publication Bias Scenario} interpretation of the model disappears when $w(u)$ is not a probability. Anyway, there are many choices for $w(u)$ even when we force it to be a probability. Assume $w^{\star}(u)$ is any bounded positive function in $\left[0,1\right]$, and define $w(u)=w^{\star}(u)/\textrm{sup}\{w^{\star}(u)\}$. Then $w\left(u\right)$ is a probability for each $u$, and fits right into the publication bias framework. An easy way to generate examples of such functions is to take density functions on $\left[0,1\right]$ and check if they are bounded. For instance, beta densities are bounded whenever both shape parameters are greater than $1$. The beta density is used in the publication bias model of \citet{citkowicz2017parsimonious}, but they do not demand it to be a probability.
+
+Even if we know the underlying $f^{\star}\left(x_{i}\mid\theta_{i},\eta_{i}\right)$ of model \eqref{eq:Publication bias model}, we will need to decide on what \emph{p}-value to use. Usually the \emph{p}-value will be approximately a one-sided normal \emph{p}-value, but it might be something
+else too. A one-sided normal \emph{p}-value makes sense because most hypotheses have just one direction that is interesting. For instance, the effect of an antidepressant must be positive for the study to be publishable. A one-sided \emph{p}-value can also be used if the researchers reported a two-sided value, since $p=0.05$ for a two-sided hypothesis corresponds to $p=0.025$ for a one-sided hypothesis. We will use the one-sided normal \emph{p}-value in all examples in this paper.
+
+Provided we know the underlying $f_{i}^{\star}$s and \emph{p-}values $u$, we only need to decide on the selection probability to have a fully specified model. \citet{hedges1992modeling} proposes the \emph{discrete selection probability}
+\begin{equation}
+w\left(u\mid\rho,\alpha\right)=\sum_{j=1}^{J}\rho_{j}1_{(\alpha_{j-1},\alpha_{j}]}\left(u\right),\label{eq:Weighted model step function}
+\end{equation}
+where $\alpha$ is a vector with $0=\alpha_{0}<\alpha_{1}<\cdots<\alpha_{J}=1$ and $\rho$ is a non-negative vector with $\rho_{1}=1$. The interpretation of this selection probability is simple: When Alice reads the \emph{p}-value $u$, she finds the $j$ with $u\in(\alpha_{j-1},\alpha_{j}]$ and accepts the study with probability $\rho_{j}$. Related to this view, \citet{hedges1992modeling} proposed $\alpha_{[1,\dots,J-1]} = \left(0.001,0.005,0.01,0.05\right)$, as these ``have particular salience for interpretation'' \citep{hedges1992modeling}. In fact, a publication decision often depends on whether a \emph{p}-value crosses the $0.05$-threshold. His reason for using more split points than just $0.05$ is that ``It is probably unreasonable to assume that much is known about the functional form of the weight function'' \citep{hedges1992modeling}. While this is true, one may prefer, considering the bias-variance trade-off heuristic, to only use one split point at $0.05$, as also done by \citet{iyengar1988selection} in their second weight function. Other reasons to prefer one split are ease of interpretation and presentation. Nevertheless, only using $0.05$ as a threshold for one-sided \emph{p}-values is problematic, as many published results are calculated using a two-sided \emph{p}-value instead. It seems therefore useful to add an additional splitting point at $0.025$, as a two-sided \emph{p}-value at that level corresponds to a one-sided \emph{p}-value of $0.05$. \emph{Ergo}, we propose a two-step function selection probability
+\[
+w\left(u\mid\rho\right)=1_{\left[0,0.025\right)}\left(u\right)+\rho_{2}1_{\left[0.025,0.05\right)}\left(u\right)+\rho_{3}1_{\left[0.05,1\right]}\left(u\right),
+\]
+where the selection probability when $u\in\left[0,0.025\right)$ is normalized to $1$ to make the model identifiable.
+
+The following proposition shows the densities of the one-sided normal step function selection probability publication bias models, with fixed effects and with normal random effects, respectively. Here the notation $\phi_{\left[a,b\right)}\left(x;\theta,\sigma\right)$ indicates a normal truncated to $\left[a,b\right)$.
+\begin{prop}
+\label{prop:One-sided normal discrete probability vector publication bias model-1}
+The density of an observation from a \emph{fixed effects} one-sided normal step function selection probability publication bias model is
+\begin{equation}\label{eq:Fixed effects, publication bias}
+f\left(x_{i};\theta_{i},\sigma_{i}\right) = \sum_{j=1}^{N}\pi_{j}^\star\phi_{\left[\Phi^{-1}\left(1-\alpha_{j}\right),\Phi^{-1}\left(1-\alpha_{j-1}\right)\right)}\left(x_{i}\mid\theta_{i},\sigma_{i}\right),
+\end{equation}
+where
+$$
+\pi_{j}^{\star}=\rho_{j}\frac{\Phi\left(c_{j-1}\mid\theta_{i},\sigma_{i}\right)-\Phi\left(c_{j}\mid\theta_{i},\sigma_{i}\right)}{\sum_{j=1}^{N}\rho_{j}\left[\Phi\left(c_{j-1}\mid\theta_{i},\sigma_{i}\right)-\Phi\left(c_{j}\mid\theta_{i},\sigma_{i}\right)\right]}
+$$
+and $c_{j}=\Phi^{-1}\left(1-\alpha_{j}\right)$.
+
+The density of an observation from the one-sided normal step function selection probability publication bias model \emph{with normal random effects} and parameters $\sigma_{i},\theta_{0},\tau,$ is, instead,
+\begin{equation}\label{eq:Random effects, publication bias}
+f\left(x\mid\theta_{0},\tau,\sigma_{i}\right)=\sum_{j=1}^{N}\pi_{j}^{\star}\left(\theta_0,\tau,\sigma_{i}\right)\phi_{\left[\Phi^{-1}\left(1-\alpha_{j}\right),\Phi^{-1}\left(1-\alpha_{j-1}\right)\right)}\left(x\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}}\right),
+\end{equation}
+where 
+\[
+\pi_{j}^{\star}\left(\theta_0,\tau,\sigma_{i}\right)=\rho_{j}\frac{\Phi\left(c_{j-1}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}}\right)-\Phi\left(c_{j}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}}\right)}{\sum_{j=1}^{J}\rho_{j}\left[\Phi\left(c_{j-1}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}}\right)-\Phi\left(c_{j}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}}\right)\right]}.
+\]
+\end{prop}
+
+Note that $f\left(x_i\mid\theta_{0},\tau,\sigma_i\right)$ is not equal to $\int f\left(x_{i};\theta_{i},\sigma_{i}\right)\phi\left(\theta_{i};\theta_{0},\tau\right)d\theta_{i}$,
+as it might have been expected. See the Appendix for more details.
+
+
+
+\subsection{The \emph{p}-hacking Model}\label{subsect:p-hacking}
+
+Imagine now the \textbf{\emph{p}}\textbf{-hacking Scenario}:
+\begin{quote}
+Bob is an astute researcher who is able to \emph{p}-hack any study to whatever level of significance he wishes. Whenever Bob does his research, he decides on a significance level to reach, which we suppose to be drawn from a distribution $\omega$. After he has made his draw, he \emph{p}-hacks his study to his desired significance level $\alpha$.
+\end{quote}
+In this scenario the original density $f^{\star}\left(x_{i};\theta_{i},\eta_{i}, u\right)$
+is transformed into the \emph{p-hacked density}
+\begin{equation}\label{eq:p-hacking model}
+f\left(x_{i};\theta_{i},\eta_{i}\right)=\int_{[0,1]}f_{\left[0,\alpha\right]}^{\star}\left(x_{i};\theta_{i},\eta_{i}, u\right)d\omega\left(\alpha\right),
+\end{equation}
+where $f_{\left[0,\alpha\right]}^{\star}$ is the density $f^{\star}$ truncated so that the \emph{p}-value $u\in\left[0,\alpha\right]$. Let us call the distribution $\omega$ the \emph{propensity to p-hack}. It might depend on covariates, but should not depend on $\theta_{i}$, as the researcher cannot know the true effect size of her/his study. While publication bias model (\ref{eq:Publication bias model}) is a selection model, the \emph{p}-hacking model (\ref{eq:p-hacking model}) is clearly a mixture model. The publication bias can also be written as a mixture model on the same form as the p-hacking model, but then $\omega$ will depend on $\theta$, see Appendix. We stress the fact that the model \eqref{eq:p-hacking model} is \emph{not} a publication bias model. Although the \emph{p}-hacking model can be written as a selection model (i.e., on the form of \eqref{eq:Publication bias model}), in general the publication probability will depend on the true effect size, which violates an obvious condition for a model to be considered a publication bias model. See Section \ref{sect:differences} for a detailed comparison of the two models.
+
+Just as the publication bias model requires a choice of $w$, the \emph{p}-hacking model requires a choice of $\omega$. A \emph{p}-hacking scientist is motivated to \emph{p}-hack to the $0.05$ level, maybe to the $0.01$ or $0.025$, but never to a level such as $0.07$ or $0.37$. This motivates the discrete \emph{p-}hacking\emph{ }probability
+$\omega\left(\alpha\mid\pi\right)=\sum_{j=1}^{J}\pi_{j}1_{(0,\alpha_{j}]}\left(\alpha\right)$
+for some vector $\alpha$ in $\left[0,1\right]^{J}$, with $0<\alpha_{1}<\alpha_{2}<\cdots<\alpha_{J}=1$,
+and vector of probabilities $\pi\in\left[0,1\right]^{J}$. The resulting density is 
+\[
+f\left(x_{i};\theta_{i},\eta_{i}\right)=\sum_{j=1}^{J}\pi_{j}\left(\int_{u\in(0,\alpha_{j}]}f^\star\left(x_{i};\theta_{i},\eta_{i}, u\right)d\omega(\alpha)\right)^{-1}f^\star\left(x_{i};\theta_{i},\eta_{i}\right)1_{(0,\alpha_{j}]}\left(u\right).
+\]
+Using a reasoning entirely analogous to that of Section \ref{subsect:publicationBias}, we define $\omega$ as
+\[
+\omega\left(u;\pi\right) = \pi_11_{\left[0,0.025\right]}\left(u\right) + \pi_{2}1_{\left(0,0.05\right]}\left(u\right) + \pi_{3}1_{\left(0,1\right]}\left(u\right),
+\]
+i.e., we only consider two splitting points at $0.025$ and $0.05$.
+
+The density of an observation from a fixed effects one-sided normal discrete probability \emph{p}-hacking model is
+\begin{eqnarray}
+f\left(x_{i};\theta_{i},\sigma_{i}\right) & = & \sum_{j=1}^{J}\pi_{j}\phi_{\left[\Phi^{-1}\left(1-\alpha_{j}\right),\Phi^{-1}\left(1-\alpha_{j-1}\right)\right)}\left(x_{i}\mid\theta_{i},\sigma_{i}\right),\label{eq:Fixed effects, p-hacking}
+\end{eqnarray}
+
+while there is not a close form for the density of its ``random effect version''.
+
+\section{Difference between the Models}\label{sect:differences}
+
+\subsection{Selection Sets\label{sec:Selection Sets}}
+There is a real but subtle difference between the publication bias model and the \emph{p}-hacking model. To properly understand this difference, let us introduce the idea of \emph{selection sets.}
+
+\begin{algorithm}[!h]
+\begin{algorithmic}[1]
+	\State $x^{0}\sim p\left(x\right)$.
+	\For{$i$ in $i=0,1,\ldots$}
+		\If{$s\mid x^i = 1$}         
+			\State Report $x^i$.           
+		\Else         
+			\State $x_{H}^{i+1}\sim p\left(x_{H}^{i}\mid x_{H^{c}}^{0}\right)$.        
+		\EndIf  
+	\EndFor  
+\end{algorithmic}
+\caption{\label{alg:Selection model}The selection model $q_{H}\left(x\right)$.}
+\end{algorithm}
+
+Let $X$ be a stochastic variable with density $p(x)$, such as a standardized effect size. Let the \emph{selection variable} $s$ be a binary stochastic variable that equals $1$ if and only if $X$ is observed. To understand the meaning of $s$, recall the publication bias scenario, where not all $X$s are observed, because they first have to be accepted by the editor. The variable $s$ equals $1$ if $X$ is accepted by the editor and $0$ otherwise. When $X$ is univariate, the density of our observed $X$ is $q\left(x\right)=\frac{p\left(s=1\mid x\right)}{p\left(s=1\right)}p\left(x\right)$. This is also known as a \emph{weighted distribution}, see e.g.\ \citet[][Eq. (3.1)]{rao1985weighted}. When $X$ is multivariate, we find ourselves in a slightly more difficult position. The problem is that we have to state which variables to integrate over to recover the normalizing constant of $q\left(x\right)\propto p\left(s=1\mid x\right)p\left(x\right)$. Let us use the term \emph{selection set} for the set of variables to integrate over and denote the set of their indexes with capital letters, e.g., $H$. Making use of the notational convention $x_{H}=\left\{ x_{i},i\in H\right\}$, define the selection model based on $H$ as
+
+\begin{equation}
+q_{H}\left(x\right)=\frac{p\left(s=1\mid x\right)}{p\left(s=1\mid x_{H^{c}}\right)}p\left(x\right)\label{eq:H-selection model},
+\end{equation}
+where $H^c$ denotes the complementary set. This model can be be viewed as a rejection sampling model \citep{von1951various}. To understand how it works, take a look at the pseudo-code in algorithm \ref{alg:Selection model}: $H$ is the set of every variable that is \emph{sampled together} until $s=1$.
+
+\begin{prop}
+The function $q_{H}\left(x\right)$ is a density for any $H$.
+\end{prop}
+
+\begin{proof}
+We only need to show that $q_{H}\left(x\right)$ integrates to $1$. By definition, $\int q_{H}\left(x\right)dx$ is $\int\frac{p\left(s=1\mid x\right)}{p\left(s=1\mid x_{H^{c}}\right)}p\left(x\right)dx.$ This equals $\int\frac{p\left(s=1\mid x_{H},x_{H^{c}}\right)}{p\left(s=1\mid x_{H^{c}}\right)}p\left(x_{H^{c}}\mid x_{H}\right)p\left(x_{H}\right)dx_{H^{c}}dx_{H}$,
+which in turn equals $\int\frac{p\left(s=1\mid x_{H^{c}}\right)}{p\left(s=1\mid x_{H^{c}}\right)}p\left(x_{H^{c}}\right)dx_{H^{c}}=1$.
+\end{proof}
+
+The selection model $q_{H}(x)$ is defined for all sets $H$. When $H$ is the complete set, it becomes the simplest kind of selection model, where every variable is sampled together until $s=1$. When $H$ is the empty set, no variables can be resampled, and the model reduces to $p\left(x\right)$. But for non-empty $H$, $q_{H}(x)$ will often be equal to neither $p(x)$ nor $q_{H\cup H^c}(x)$, and different choices of selection sets $H\neq G$ will usually lead to different models $q_{H}(x)\neq q_{G}(x)$. 
+\begin{prop}
+\label{prop:Equal selection models}Two selection models based on the same $p(x)$ and $s$ are equal, i.e. $q_{H}(x)=q_{G}(x)$, if and only if $p\left(s=1\mid x_{H^{c}}\right)=p\left(s=1\mid x_{G^{c}}\right)$.
+In particular, $q_{H}(x)=p(x)$ if and only if $p\left(s=1\mid x_{H^{c}}\right)=p\left(s=1\mid x\right)$.
+\end{prop}
+
+\begin{proof}
+Both results follow directly from Equation \eqref{eq:H-selection model}.
+\end{proof}
+
+It is handy to visualize selection models and their selection sets using directed acyclic graphs. To this end recall that a \emph{Bayesian network} is a directed acyclic graph $G$ together with a probability
+density $p$ satisfying the property that $p\left(x\right)=\prod_{v\in V\left(G\right)}p\left(x_{v}\mid x_{\textrm{pa}\left(v\right)}\right)$, where $V\left(G\right)$ is the set of vertices in $G$ and $x_{\textrm{pa}\left(v\right)}$ are the parents of $x_{v}$ in $G$ \citep{Pearl2014}.
+Transforming a Bayesian network for $p$ into a Bayesian network for $q_{H}$ is easy, just add the following to $G$: (i) The selection variable vertex $s$, and (ii) arrows $x$ to $s$ for each $x$ that $s$ depends on. Then
+\begin{equation}
+q_{H}\left(x\mid s=1\right)=\frac{p\left(s=1\mid x_{\textrm{pa}\left(s\right)}\right)}{p\left(s=1\mid H^{c}\right)}\prod_{v\in V\left(G\right)}p\left(x_{v}\mid x_{\textrm{pa}\left(v\right)}\right)\label{eq:DAG, selection model}.
+\end{equation}
+
+To visualize the selection set $H$, start by drawing a dashed plate around the vertices in $H$. In plate notation \citep{buntine1994operations}, a solid plate represents variables that are sampled together. The
+dashed plate does almost the same, for recall that $H$ contains all the elements that are sampled together until $s=1$. The semantic difference between a dashed and a solid plate is that every sample in a solid plate is observed, but only one of potentially very many samples in a dashed plate is observed. The following bare-bones example should make things clear.
+\begin{example}\label{exa:Marginal density of theta}
+Let $p\left(x,\theta\right)=p\left(x\mid\theta\right)p\left(\theta\right)$
+be a density and $s$ be a function of $x$ only, so that $p\left(s=1\mid x,\theta\right)=p\left(s=1\mid x\right)$.
+The possible selection models are
+\begin{eqnarray*}
+q_{\emptyset}\left(x,\theta\right) = q_{\theta}\left(x,\theta\right) & = & p\left(x,\theta\right)\\
+q_{\left(x,\theta\right)}\left(x,\theta\right) & = & \frac{p\left(s=1\mid x\right)}{p\left(s=1\right)}p\left(x,\theta\right)\\
+q_{x}\left(x,\theta\right) & = & \frac{p\left(s=1\mid x\right)}{p\left(s=1\mid\theta\right)}p\left(x,\theta\right)
+\end{eqnarray*}
+Figure \ref{fig:Plate notation, simple example} displays the directed acyclic graphs of $p$ and the selection models when $H = \emptyset$, $H=\left\{ x,\theta\right\}$, and $H=\left\{ x\right\}$, respectively. The marginal distribution of $\theta$ is not the same for $H=\left\{ x\right\}$ and $H=\left\{ x,\theta\right\} $, as
+\begin{eqnarray*}
+q_{\left\{ x,\theta\right\} }\left(\theta\right) & = & p\left(\theta\right)\frac{p\left(s=1\mid\theta\right)}{p\left(s=1\right)}\\
+q_{x}\left(\theta\right) & = & \int\frac{p\left(s=1\mid x\right)}{p\left(s=1\mid\theta\right)}p\left(x,\theta\right)dx=p\left(\theta\right),
+\end{eqnarray*}
+i.e., it is affected by the selection mechanism $s$.
+\end{example}
+
+\begin{figure}
+\begin{center}     
+ \begin{tabular}{ccc}   
+  \import{figures/}{simple_example_0} &   
+   \import{figures/}{simple_example_1} & 
+   \import{figures/}{simple_example_2}
+ \end{tabular} 
+\end{center}
+
+\caption{\label{fig:Plate notation, simple example} Three simple selection models. {\bf (left)} the original $p\left(x,\theta\right)$; {\bf (middle)} the model $q_{\left\{ x,\theta\right\} }$, where $\theta$ and $x$ are
+sampled together until $s=1$; {\bf (right)} the model $q_{x}$, where only $x$ is sampled until $s=1$.}
+\end{figure}
+
+Let $f\left(x,\theta\mid\eta\right)=f\left(x\mid\theta,\eta\right)p\left(\theta\right)$
+be the joint density of a random effects meta-analysis, where $x$ is the effect size, $\theta$ is the study-specific parameter of interest, and $\eta$ is a study-specific nuisance parameter such as the sample size of the study. The left plot of Figure \ref{fig:Plate notation, simple example} is a visualization of $f\left(x,\theta\right)$. If we have more than one study to analyse, we will have to work with product density $\prod_{i=1}^{n}f\left(x_{i},\theta_{i}\mid\eta_{i}\right)$ instead of the stand-alone density $f\left(x,\theta\mid\eta\right)$. This is visualised in the middle plot of Figure \ref{fig:Plate notation, simple example}  by drawing a solid plate around the pair $\left(x,\theta\right)$. When we are dealing with a fixed effects meta-analysis, in which $\theta$ is fixed, the plate should be drawn around $x$ only (Figure \ref{fig:Plate notation, simple example}, right graph). 
+
+
+\subsection{Publication bias and $p$-hacking models\label{subsec:Selection sets, meta analysis}}
+
+To visualize selection models based on $p$-values, we must make some modifications to the original graph: (i) add the $p$-value node $u$, (ii) add an arrow from $x$ to $u$. (iii) since the $p$-value $u$ usually depends on more information than just $x$, such as the standard deviation of $x$, add an arrow from $\eta$ (which represents the extra information) to $u$ as well; (iv) add the selection node $s$ and an arrow from $u$ to $s$. If $u$ is the only parent of $s$, we are dealing with selection models \emph{only} based on
+\emph{p}-values. 
+
+The placement of dashed and solid plates, instead, depends on which model we want to use:
+\begin{itemize}
+\item \emph{Publication bias}. The idea behind the publication bias model is that a completely new study is done whenever the last one failed to be published. This implies that $\theta$ and $x$ are sampled together. The left plot of Figure \ref{fig:Plate notation, publication bias and p-hacking} shows the direct acyclic graph of the normal publication bias model defined in Proposition \ref{prop:One-sided normal discrete probability vector publication bias model-1}. In this particular case, $\eta$ corresponds to $\sigma$, the standard deviation. Moreover, $u$ is a \emph{p}-value, $\theta_{0}$ is the mean of the effect size distribution, $\tau$ is the standard deviation of the effect size distribution, and $\rho$ is the selection probability function. The variable $Z$ lives on the unit interval, and encodes the editor's decision to publish: If the observed \emph{p}-value is less than $Z$, the study is published. Importantly, $Z$ is placed inside the selection set because a new \emph{p}-value cut-off decision is made for each study received. Since $x$ and $\theta$ are sampled together, the selection mechanism modifies $p\left(\theta\right)$.%, as can be seen in the example \ref{exa:Publication bias, theta distribution} here below.
+
+\item \emph{p}-hacking. In the \emph{p}-hacking scenario, the \emph{p}-hacker will hack her/his study all the way to significance, regardless of $\theta$. This means that $\theta$ and $x$ are sampled separately and $\theta$ must be placed outside the selection set. Moreover, the decision of how much to \emph{p}-hack is \emph{not} re-evaluated at each attempt and, consequently, the random variable that controls the \emph{p}-hacking decisions, analogously to the publication bias model, $Z$, is also placed outside the selection graph. This is the case, for example, of an an author who decides to \emph{p}-hack to level $\alpha$ ($Z = \alpha$): (s)he acts on $x$ to obtain the desired $p$-value, whatever the sampled $\theta$ is. The graphical representation of this model is shown in the right plot of Figure \ref{fig:Plate notation, publication bias and p-hacking}. Note that, since $x$ and $\theta$ are not sampled together, the selection mechanism \emph{does not} modify $p\left(\theta\right)$.
+\end{itemize}
+
+\begin{figure}
+\begin{center}     
+ \begin{tabular}{cc}    
+  \import{figures/}{publication_bias_type_i} &     
+  \import{figures/}{phacking_type_ii}
+ \end{tabular} 
+\end{center}
+\caption{\label{fig:Plate notation, publication bias and p-hacking} Directed acyclic graphs for: {\bf (left)}
+the publication bias model; {\bf (right)} the \emph{p}-hacking model. The dashed plates enclose the selection sets and the the solid plates enclose variables that are repeated together.}
+\end{figure}
+
+
+\subsection{Equivalence in special cases}
+The publication bias model defined in Proposition \ref{prop:One-sided normal discrete probability vector publication bias model-1} and the \emph{p}-hacking model are equivalent when $\sigma_{i}$ is fixed across studies. This holds both for the fixed and random effects models. To see this, let $\pi$ be any probability vector for the \emph{p}-hacking model and solve the invertible linear system $\pi^{\star}\left(\rho\right)=\pi$ for $\rho$. There is no guarantee for the models to be equivalent when $\sigma_{i}$ is not fixed, as it can be seen in the Appendix.
+
+
+
+
+
+%\begin{example}[Publication Bias model with normal effect size distribution]
+%
+%The density of the selected effect size distribution for the one-sided normal discrete probability vector publication bias model with normal effect size distribution is given in the following proposition.
+%
+%The density of the selected effect size distribution for the one-sided
+%normal discrete probability vector publication bias model with normal
+%effect size distribution is
+%
+%\[
+%f_{sel}\left(\theta\mid\theta_{0},\tau,\sigma\right)=\phi\left(\theta\mid\theta_{0},\tau\right)\frac{\sum_{j=1}^{N}\rho_{j}\left[\Phi\left(c_{j-1}\mid\theta,\sigma\right)-\Phi\left(c_{j}\mid\theta,\sigma\right)\right]}{\sum_{j=1}^{N}\rho_{j}\left[\left(c_{j-1}\mid\theta_{0},\sqrt{\tau^{2}+\sigma^{2}}\right)-\Phi\left(c_{j}\mid\theta_{0},\sqrt{\tau^{2}+\sigma^{2}}\right)\right]}
+%\]
+%
+%By example \ref{exa:Publication bias, theta distribution}, $f\left(\theta\mid\theta_{0},\tau,\sigma\right)=\int\frac{p\left(s=1\mid x\right)}{p\left(s=1\mid\theta_{0},\tau,\sigma\right)}p\left(x,\theta\mid\theta_{0},\tau,\sigma\right)dx$.
+%Then
+%\[
+%p\left(s=1\mid\theta_{0},\tau,\sigma\right)=\sum_{j=1}^{N}\rho_{j}\left[\Phi\left(c_{j-1}\mid\theta_{0},\sqrt{\tau^{2}+\sigma^{2}}\right)-\Phi\left(c_{j}\mid\theta_{0},\sqrt{\tau^{2}+\sigma^{2}}\right)\right],
+%\]
+%with $c_{j}=\Phi^{-1}\left(1-\alpha_{j}\right)$. Since $p\left(s=1\mid x\right)=\sum_{j=1}^{N}\rho_{j}1_{\left[c_{j},c_{j-1}\right)}\left(x\right)$
+%and $p\left(x,\theta\mid\theta_{0},\tau,\sigma\right)=\phi\left(x\mid\theta,\sigma\right)\phi\left(\theta\mid\theta_{0},\tau\right)$,
+%\begin{eqnarray*}
+%\int p\left(s=1\mid x\right)p\left(x,\theta\mid\theta_{0},\tau,\sigma\right)dx & = & \phi\left(\theta\mid\theta_{0},\tau\right)\sum_{j=1}^{N}\rho_{j}\left[\Phi\left(c_{j-1}\mid\theta,\sigma\right)-\Phi\left(c_{j}\mid\theta,\sigma\right)\right]
+%\end{eqnarray*}
+%
+%Since the selected effect size distribution depends on the \emph{p}-value
+%$u$, it also depends on $\sigma$. Since we never run a meta-analysis
+%on just on data point, we will always have a collection of $\sigma$s
+%to deal with. Define the \emph{observed effect size density }by 
+%\begin{equation}
+%f_{obs}\left(\theta\mid\theta_{0},\tau,\left\{ \sigma_{i}\right\} _{i=1}^{n}\right)=\sum_{i=1}^{n}\frac{1}{n}f_{sel}\left(\theta\mid\theta_{0},\tau,\sigma_{i}\right)\label{eq:Observed effect size density}
+%\end{equation}
+%This is the mean of the the selected effect size distribution, and
+%is interpreted as the selected effect size distribution when $\sigma_{i}$
+%is chosen randomly among the collection of $\sigma$s. The observed
+%effect size distribution can be widely different from the underlying
+%effect size distribution, as we will see in section \ref{subsec:cuddy2018}.
+%\end{example}
+
+
+
+\section{Simulations}\label{sect:simulations}
+
+%\begin{example}[Publication bias selected effect size distribution]\label{exa:Publication bias, theta distribution}
+%The density of $\theta$ in a random effects meta-analysis with publication bias is $\int\frac{p\left(s=1\mid u\right)}{p\left(s=1\mid\theta;\eta\right)}p\left(x,\theta;\eta\right)dx$, where $\eta$ are study-specific parameters and $u$ is a deterministic function of $x$ and $\eta$. Since $u$ typically depends on both
+%$x$ and $\eta$, so does the density of $\theta$. Let $x$ be normal with mean $\theta$ and standard deviation $\sigma$, $u$ be the usual one-sided \emph{p}-value and the effect size distribution of $\theta$ be normal with mean $\theta_{0}$ and standard deviation $\tau$, the setting of example \ref{prop:One-sided normal discrete probability vector publication bias model-1}. The selection mechanism $s$ equals $1$ when $u\leq0.05$ and $p\left(s=1\right)=0.1$ otherwise. This means that every significant study is published and a non-significant study is published with probability $0.1$.
+%
+%The effect of publication bias on the distribution of $\theta$ is shown in Figure \ref{fig:Marginal distribution of effect sizes}. Two selected effect size distributions with underlying mean $0$ are displayed: one with a large standard deviation (left plot, $\tau=0.5$) and one with a small one ($\tau=0.1$, right plot). In both cases, the effect of the selection is shown with two different values $\sigma$, namely $1/100$ (dashed line) and $1/20$ (dotted line). The effect size distribution is strongly affected by $\tau$ both in shape and location; the mean of the selected distribution when $\tau = 0.5$ is $0.5$ when $\sigma=1/100$ and $0.58$ when $\sigma=1/20$. When $\tau = 0.1$, the mean of the selected distribution is $0.08$ when $\sigma=1/100$ and $0.12$ when $\sigma=1/20$. Thus, while $\sigma$ has an effect on the shape and mean of the selected distribution, it is much smaller than the effect of $\tau$.
+%
+%\begin{figure}
+%\noindent \begin{centering}
+%\includegraphics[scale=0.3]{plots/pb_esdistribution_large_tau}\includegraphics[scale=0.3]{plots/pb_esdistribution_small_tau}
+%\par\end{centering}
+%\caption{\label{fig:Marginal distribution of effect sizes} The distribution of $\theta$ before and after selection. In both plots, $\theta_{0}=0$, the solid line is the effect sizes distribution before selection,
+%the dashed line selected with $\sigma^{2}=1/100$ and the dotted line
+%selected with $\sigma^{2}=1/20$ and. (left) $\tau=0.5$ (right) $\tau=0.1$.
+%Notice the change of $y$-axis.}
+%\end{figure}
+%\end{example}
+%
+%
+%\subsection{Publication bias model versus $p$-hacking model}
+Before looking at the performances of the two models in real examples, let us compare them in a simulation study. The scope is three-fold:
+\begin{itemize}
+\item check whether the models give reasonable results in the absence of \emph{p}-hacking and publication bias. Although we know that these phenomena are basically ubiquitous (and, therefore, it makes sense to always include suitable corrections), it is nevertheless important that the models do not distort the results when there is no publication bias or \emph{p}-hacking;
+\item evaluate under which conditions the models do not perform as they should. In particular, we are interested whether the models manage to provide reasonable results when $n$ is small (which is a pretty common situation in most meta-analysis studies) and/or when the variability among the studies is high;
+\item contrast the results of the two models. In particular, we are interested in evaluating whether the two models provide similar results in the case of publication bias and in the case of \emph{p}-hacking, and which one performs the best.
+\end{itemize}
+
+\subsection{Settings}
+Data are generated under three scenarios: (i) no publication bias nor \emph{p}-hacking, by generating data from the normal random effect meta-analysis model; (ii) presence of publication bias, by generating data from the model \eqref{eq:Random effects, publication bias}; (iii) presence of \emph{p}-hacking, by generating data from the model random effects normal \emph{p}-hacking model. The study-specific variances $\sigma_{i}^{2}$ are sampled uniformly from $\left\{ 20,\ldots80\right\} $. The size of the meta-analyses are $n = 5, 30, 100$, corresponding to small, medium and large meta-analyses, while the means for the effect size distribution are $0, 0.2, 0.8$. The value $\theta = 0$ is interesting as it corresponds to no expected effect, while the positive $\theta$s correspond to the cut-off for small and large effect sizes of \citet[][pages 24 -- 27]{cohen1988statistical}. The standard deviations of the random effects distributions are $\tau=0.1$, which represents a reasonable amount of heterogeneity, and $\tau=0.5$, which is a relatively large amount of heterogeneity and provides a challenging situation for the models under investigation. The probability of acceptance of a paper are simulated to be $1$ if the \emph{p}-value is between $0$ and $0.025$, $0.7$ if the \emph{p}-value is between $0.025$ and $0.05$, and $0.1$ otherwise ($[0.05, 1]$). For the same intervals, the \emph{p}-hacking probabilities are $0.6$, $0.3$ and $0.1$, respectively.
+
+Regarding the implementation of the models, normal models for the effect size with one-sided significance cut-off at $0.025$ and $0.05$ are used both for the publication bias and the \emph{p}-hacking models. We use standard Gaussian priors for $\theta_{0}$, a standard half normal prior for $\tau$, and, in the \emph{p}-hacking model, a uniform Dirichlet prior for $\pi$. For the $\rho$ in the publication bias model, instead, a uniform Dirichlet constrained to $\rho_{1}\geq\rho_{2}\geq\ldots\geq\rho_{j}$, which forces the publication probabilities to be decreasing in the \emph{p}-value, is used.
+
+These priors are reasonable when we think about real data situations. A standard normal for $\theta_{0}$ is reasonable because we know that $\theta_{0}$ has a small magnitude in pretty much any meta-analysis, and most are clustered around $0$. A half normal prior for $\tau$ is also reasonable, as $\tau$ is much more likely to be very small than very big. The priors for $\rho$ and $\pi$ are harder to reason about, but a uniform Dirichlet seems like a natural and neutral choice. These are the standard prior of the $\mathtt{R}$ package $\mathtt{publipha}$ \citep{publipha}, which we used for all computations.
+
+\subsection{Results}
+\paragraph{No publication bias, no \emph{p}-hacking} The results under this scenario are reported in Table \ref{tab:Simulation_classical}. We note that, with a reasonable variability ($\tau = 0.1$), both the \emph{p}-hacking and the publication bias perform very well. The publication bias perform slightly worse than the \emph{p}-hacking model when the mean effect size is large ($\theta = 0.8$) and the number of studies small ($n=5$), but it catches up when $n$ increases. Much more interesting is the situation with $\tau = 0.5$. Here we clearly see that the \emph{p}-hacking model outperforms the publication bias model, with the latter that tends to always underestimate the mean effect. While the problem reduces when $n$ increases, we note that there is still a substantial underestimation of $\theta$ even in the not really realistic case of $n = 100$ (i.e., a meta-analysis including the results of 100 studies). In contrast, both models seems to estimate pretty well the value of $\tau$. As a take home message, we can say that it is safe to use the \emph{p}-hacking model when there is no \emph{p}-hacking or publication bias, less safe to use the publication bias one.
+
+\begin{table}
+\noindent
+\caption{\label{tab:Simulation_classical} {\bf No publication bias, no \emph{p}-hacking scenario:} result of the simulations (posterior means and standard deviations from the \emph{p}-hacking and publication bias models) when the data are simulated from the normal random effects meta-analysis model.}
+\begin{center}
+\begin{tabular}{llllrrrrrrrc}
+\multicolumn{3}{r}{\textbf{True values}} &  & \multicolumn{3}{c}{\textbf{$p$-hacking model}} &  & \multicolumn{3}{c}{\textbf{Publication bias model}} & \tabularnewline
+$\tau$ & $\theta$ & $n$ &  & \multicolumn{1}{c}{$\widehat{\theta}$} &  & \multicolumn{1}{c}{$\widehat{\tau}$} &  & \multicolumn{1}{c}{$\widehat{\theta}$} &  & \multicolumn{1}{c}{$\widehat{\tau}$} & \tabularnewline
+\hline
+\multirow{9}{*}{$0.1$} & \multirow{3}{*}{$0$} & $5$ &  & -0.03 (0.09) &  & 0.18 (0.07) &  & -0.06 (0.08) &  & 0.13 (0.06) & \tabularnewline
+ &  & $30$ &  & -0.01 (0.03) &  & 0.08 (0.03) &  & -0.02 (0.03) &  & 0.07 (0.03) & \tabularnewline
+ &  & $100$ &  & -0.01 (0.02) &  & 0.08 (0.03) &  & -0.01 (0.02) &  & 0.07 (0.02) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.2$} & $5$ &  &  0.12 (0.08) &  & 0.21 (0.08) &  &  0.09 (0.07) &  & 0.17 (0.08) & \tabularnewline
+ &  & $30$ &  &  0.17 (0.04) &  & 0.09 (0.04) &  &  0.15 (0.03) &  & 0.09 (0.04) & \tabularnewline
+ &  & $100$ &  &  0.18 (0.02) &  & 0.09 (0.03) &  &  0.17 (0.02) &  & 0.09 (0.03) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.8$} & $5$ &  &  0.78 (0.08) &  & 0.21 (0.10) &  &  0.63 (0.15) &  & 0.34 (0.14) & \tabularnewline
+ &  & $30$ &  &  0.80 (0.04) &  & 0.11 (0.04) &  &  0.80 (0.04) &  & 0.11 (0.04) & \tabularnewline
+ &  & $100$ &  &  0.80 (0.02) &  & 0.10 (0.03) &  &  0.80 (0.02) &  & 0.10 (0.03) & \tabularnewline
+ \cline{2-12}
+\multirow{9}{*}{$0.5$} & \multirow{3}{*}{$0$} & $5$ &  & -0.03 (0.20) &  & 0.59 (0.21) &  & -0.21 (0.17) &  & 0.53 (0.21) & \tabularnewline
+ &  & $30$ &  & -0.03 (0.09) &  & 0.51 (0.08) &  & -0.14 (0.09) &  & 0.47 (0.08) & \tabularnewline
+ &  & $100$ &  & -0.02 (0.05) &  & 0.50 (0.04) &  & -0.08 (0.06) &  & 0.48 (0.04) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.2$} & $5$ &  &  0.10 (0.22) &  & 0.57 (0.20) &  & -0.09 (0.19) &  & 0.54 (0.19) & \tabularnewline
+ &  & $30$ &  &  0.15 (0.10) &  & 0.53 (0.08) &  &  0.02 (0.10) &  & 0.51 (0.08) & \tabularnewline
+ &  & $100$ &  &  0.19 (0.05) &  & 0.51 (0.04) &  &  0.11 (0.06) &  & 0.49 (0.04) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.8$} & $5$ &  &  0.68 (0.23) &  & 0.62 (0.21) &  &  0.35 (0.23) &  & 0.74 (0.21) & \tabularnewline
+ &  & $30$ &  &  0.78 (0.10) &  & 0.52 (0.08) &  &  0.60 (0.14) &  & 0.60 (0.08) & \tabularnewline
+ &  & $100$ &  &  0.79 (0.05) &  & 0.51 (0.04) &  &  0.70 (0.07) &  & 0.55 (0.04) & \tabularnewline
+ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\paragraph{Publication bias} As we expect, when the data are generated from the publication bias model, this performs better than the $p$-hacking model, see Table \ref{tab:Simulation_pb}. However, this is true for the hard situation of high variability between the studies ($\tau = 0.5$), in which the \emph{p}-hacking model overestimates the $\theta$s, but not really for the more realistic situation of $\tau = 0.1$. Note that, in the most challenging case of $n=5$, the \emph{p}-hacking model is never worse than the publication bias model (but for a larger variability when $\theta = 0$ and $0.2$), and even provides an estimate closer to the nominal one when $\theta = 0.8$. Also in this scenario, both models seems to estimate reasonably well $\tau$.
+
+\begin{table}
+\noindent
+\caption{\label{tab:Simulation_pb} {\bf Publication bias scenario:} result of the simulations (posterior means and standard deviations from the \emph{p}-hacking and publication bias models) when the data are simulated  from the publication bias model with cut-off at $0.025$ and $0.05$, with selection probabilities equal to $1$, $0.7$ and $0.1$ in the intervals $[0, 0.025)$, $[0.025, 0.05)$ and $[0.5, 1]$, respectively.}
+\begin{center}
+\begin{tabular}{llllrrrrrrrc}
+\multicolumn{3}{r}{\textbf{True values}} &  & \multicolumn{3}{c}{\textbf{$p$-hacking model}} &  & \multicolumn{3}{c}{\textbf{Publication bias model}} & \tabularnewline
+$\tau$ & $\theta$ & $n$ &  & $\widehat{\theta}$ &  & $\widehat{\tau}$ &  & $\widehat{\theta}$ &  & $\widehat{\tau}$ & \tabularnewline
+\hline
+\multirow{9}{*}{$0.1$} & \multirow{3}{*}{$0$} & $5$ &  & -0.01 (0.10) &  & 0.23 (0.08) &  & -0.01 (0.07) &  & 0.18 (0.07) & \tabularnewline
+ &  & $30$ &  &  0.02 (0.04) &  & 0.12 (0.05) &  &  0.01 (0.04) &  & 0.10 (0.04) & \tabularnewline
+ &  & $100$ &  &  0.02 (0.03) &  & 0.12 (0.03) &  &  0.00 (0.02) &  & 0.10 (0.03) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.2$} & $5$ &  &  0.10 (0.15) &  & 0.30 (0.09) &  &  0.10 (0.07) &  & 0.21 (0.08) & \tabularnewline
+ &  & $30$ &  &  0.22 (0.05) &  & 0.11 (0.05) &  &  0.19 (0.05) &  & 0.09 (0.04) & \tabularnewline
+ &  & $100$ &  &  0.23 (0.03) &  & 0.10 (0.04) &  &  0.20 (0.04) &  & 0.09 (0.03) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.8$} & $5$ &  &  0.77 (0.08) &  & 0.20 (0.08) &  &  0.62 (0.14) &  & 0.32 (0.12) & \tabularnewline
+ &  & $30$ &  &  0.80 (0.03) &  & 0.10 (0.04) &  &  0.79 (0.03) &  & 0.10 (0.04) & \tabularnewline
+ &  & $100$ &  &  0.80 (0.02) &  & 0.10 (0.02) &  &  0.80 (0.02) &  & 0.10 (0.02) & \tabularnewline
+ \cline{2-12}
+ \multirow{9}{*}{$0.5$} & \multirow{3}{*}{$0$} & $5$ &  &  0.34 (0.21) &  & 0.53 (0.20) &  &  0.04 (0.22) &  & 0.56 (0.18) & \tabularnewline
+ &  & $30$ &  &  0.36 (0.10) &  & 0.48 (0.09) &  &  0.01 (0.19) &  & 0.50 (0.08) & \tabularnewline
+ &  & $100$ &  &  0.36 (0.04) &  & 0.47 (0.04) &  & -0.01 (0.10) &  & 0.50 (0.04) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.2$} & $5$ &  &  0.42 (0.21) &  & 0.54 (0.22) &  &  0.12 (0.22) &  & 0.59 (0.19) & \tabularnewline
+ &  & $30$ &  &  0.50 (0.07) &  & 0.44 (0.08) &  &  0.16 (0.18) &  & 0.51 (0.09) & \tabularnewline
+ &  & $100$ &  &  0.51 (0.04) &  & 0.42 (0.04) &  &  0.19 (0.10) &  & 0.50 (0.05) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.8$} & $5$ &  &  0.81 (0.22) &  & 0.56 (0.19) &  &  0.47 (0.27) &  & 0.71 (0.20) & \tabularnewline
+ &  & $30$ &  &  0.90 (0.09) &  & 0.45 (0.08) &  &  0.64 (0.21) &  & 0.58 (0.13) & \tabularnewline
+ &  & $100$ &  &  0.90 (0.04) &  & 0.45 (0.04) &  &  0.74 (0.09) &  & 0.53 (0.06) & \tabularnewline
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\paragraph{\emph{p}-hacking} Finally, the results for the case in which the data are simulated from the \emph{p}-hacking model are reported in Table \ref{tab:Simulation_ph}. As before, the largest differences are in the most difficult case of $\tau = 0.5$, while the two models tend to agree in the (more realistic) case $\tau = 0.1$. Interestingly, as in the previous scenario, the publication bias model struggles in the case $\theta = 0.8$, $n=5$. When $\tau = 0.5$ the publication bias model underestimates $\theta$. In contrast to the \emph{p}-hacking model in the previous scenario, when its overestimation behaviour does not seems to worsen when $n$ increases, here the results of the publication bias model get noticeably worse, reflecting a systematic overestimation of the correction (which lead to the underestimated values for $\theta$ reported in the table). This should not come as a surprise given the interpretation of $\theta$ in the publication bias model, but strongly suggests that we should be cautious when interpreting the $\theta$ estimates. 
+
+\begin{table}
+\caption{\label{tab:Simulation_ph} {\bf \emph{p}-hacking scenario:} result of the simulations (posterior means and standard deviations from the \emph{p}-hacking and publication bias models) when the data are simulated  from the \emph{p}-hacking model with cut-off at $0.025$ and $0.05$, with \emph{p}-hacking probabilities equal to $0.6$, $0.3$ and $0.1$ in the intervals $[0, 0.025)$, $[0.025, 0.05)$ and $[0.5, 1]$, respectively.}
+\begin{center}
+\begin{tabular}{llllrrrrrrrc}
+\multicolumn{3}{r}{\textbf{True values}} &  & \multicolumn{3}{c}{\textbf{$p$-hacking model}} &  & \multicolumn{3}{c}{\textbf{Publication bias model}} & \tabularnewline
+$\tau$ & $\theta$ & $n$ &  & $\widehat{\theta}$ &  & $\widehat{\tau}$ &  & $\widehat{\theta}$ &  & $\widehat{\tau}$ & \tabularnewline
+ \hline
+ \multirow{9}{*}{$0.1$} & \multirow{3}{*}{$0$} & $5$ &  & -0.06 (0.14) &  & 0.29 (0.07) &  &   0.04 (0.06) &  & 0.17 (0.05) & \tabularnewline
+ &  & $30$ &  & -0.02 (0.08) &  & 0.13 (0.05) &  &   0.01 (0.07) &  & 0.07 (0.03) & \tabularnewline
+ &  & $100$ &  &  0.00 (0.05) &  & 0.10 (0.04) &  &   0.00 (0.05) &  & 0.05 (0.02) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.2$} & $5$ &  &  0.12 (0.16) &  & 0.29 (0.09) &  &   0.10 (0.06) &  & 0.21 (0.06) & \tabularnewline
+ &  & $30$ &  &  0.18 (0.06) &  & 0.12 (0.05) &  &   0.15 (0.06) &  & 0.09 (0.03) & \tabularnewline
+ &  & $100$ &  &  0.20 (0.04) &  & 0.09 (0.04) &  &   0.17 (0.05) &  & 0.08 (0.03) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.8$} & $5$ &  &  0.79 (0.08) &  & 0.18 (0.09) &  &   0.65 (0.14) &  & 0.30 (0.13) & \tabularnewline
+ &  & $30$ &  &  0.80 (0.03) &  & 0.10 (0.04) &  &   0.79 (0.03) &  & 0.10 (0.04) & \tabularnewline
+ &  & $100$ &  &  0.80 (0.02) &  & 0.10 (0.02) &  &   0.80 (0.02) &  & 0.10 (0.02) & \tabularnewline
+ \cline{2-12}
+ \multirow{9}{*}{$0.5$} & \multirow{3}{*}{$0$} & $5$ &  &  0.08 (0.22) &  & 0.47 (0.19) &  &   0.01 (0.12) &  & 0.37 (0.19) & \tabularnewline
+ &  & $30$ &  &  0.08 (0.09) &  & 0.43 (0.08) &  &  -0.24 (0.19) &  & 0.35 (0.10) & \tabularnewline
+ &  & $100$ &  &  0.07 (0.06) &  & 0.44 (0.04) &  &  -0.33 (0.14) &  & 0.37 (0.06) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.2$} & $5$ &  &  0.19 (0.24) &  & 0.50 (0.20) &  &   0.05 (0.13) &  & 0.42 (0.22) & \tabularnewline
+ &  & $30$ &  &  0.24 (0.09) &  & 0.47 (0.08) &  &  -0.20 (0.19) &  & 0.46 (0.09) & \tabularnewline
+ &  & $100$ &  &  0.23 (0.05) &  & 0.47 (0.04) &  &  -0.27 (0.16) &  & 0.47 (0.06) & \tabularnewline
+ \cdashline{3-11}
+ & \multirow{3}{*}{$0.8$} & $5$ &  &  0.72 (0.19) &  & 0.60 (0.19) &  &   0.35 (0.20) &  & 0.73 (0.19) & \tabularnewline
+ &  & $30$ &  &  0.78 (0.09) &  & 0.52 (0.07) &  &   0.36 (0.23) &  & 0.67 (0.11) & \tabularnewline
+ &  & $100$ &  &  0.80 (0.05) &  & 0.50 (0.04) &  &   0.42 (0.20) &  & 0.65 (0.09) & \tabularnewline
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\section{Examples}\label{sect:examples}
+To evaluate the models in real situations, we applied them to two data sets. As in the simulation study, we use normal models for each effect size with one-sided significance cut-off at $0.025$ and $0.05$ for both models. The priors used are also the same as in the simulation study, as they were chosen in the first instance thinking to real data applications. As we do not know the truth, the models are evaluated by using a specific information criterion, namely the leave-one-out cross-validation information criterion \citet[LOOIC][]{loo_article}, here calculated using the R \citep{R} package $\mathtt{loo}$ \citep{loo}. LOOIC is defined by $-2\cdot\widehat{\text{elpd}_{\text{loo}}}$, where $\text{elpd}$ is the expected log pointwise predictive density for a new data set and $\widehat{\textrm{elpd}_{\textrm{loo}}}$ is an estimate of this quantity by leave-one-out cross validation. Just as the AIC \citep{akaike1998information}, smaller values indicate better model fit (they correspond to higher elpd). As for the simulation study, the analyses are performed by using the $\mathtt{R}$ package $\mathtt{publipha}$ \citep{publipha}. Each model has been estimated with $8$ chains.
+
+\subsection{Power posing\label{subsec:cuddy2018}}
+
+\citet{cuddy2018p} conducted a meta-analysis of a of \emph{power posing}, an alleged phenomenon for which adopting expansive postures has positive psychological feedback effects. Their meta-analysis is not conventional, in the sense that it is not based on estimated effect sizes and standard errors, but on \emph{p}-values through test statistics, through the \emph{p}-curve analysis approach \citep{simonsohn2014p}. The data from \citet{cuddy2018p} can be accessed via the Open Science Framework (\url{https://osf.io/pfh6r/}). Here we only consider studies with outcome ``mean difference'', design ``2 cell'', and test statistic that is either $F$ or $t$. The $F$-statistics are all with $1$ denominator degree of freedom, and the root of these are distributed as the absolute value of a $t$-distributed variable. All the $F$-statistics appear to show an effect in the same direction, so they are assumed $t$-distributed. The $t$-values and the roots of the $F$-statistics are converted to standardized mean differences by using $d = t\sqrt{2/\nu}$, where $\nu$ is the degrees of freedom for the $t$-test. The resulting standardized mean differences are shown in the left plot of Figure \ref{fig:cuddy2017}. Note that the point $x_{12} = 1.72$ is pretty far from the others, and may be considered an outlier. As it has a large effect on all the models, we repeat the analyses both with and without this specific study.
+
+\begin{figure}
+\noindent \begin{centering}
+\includegraphics[width=0.49\textwidth]{plots/cuddy2018}\includegraphics[width=0.49\textwidth]{plots/cuddy2018_posterior}
+\par\end{centering}
+\caption{\label{fig:cuddy2017} Power posing example: \textbf{(left)} effect sizes. The dotted black line is $1.96/\textrm{sd}$ and the dashed black line is $1.64/\textrm{sd}$. The ticks on the right hand side are
+the meta-analytic means: $0.48$ is from the uncorrected model, $0.17$ is the mean of the selected effect size distribution under the \emph{p}-hacking model, while $-0.06$ is the mean under the publication bias model. \textbf{(right)} Posterior densities for $\theta_{4}$. The dashed density belongs to the \emph{p}-hacking model, the dotted to the publication bias model, and the solid to the uncorrected model. The point $x_{4}=0.68$ is marked for reference.}
+\end{figure}
+
+We applied the \emph{p}-hacking and the publication bias models to these data, and report the results in Table \ref{tab:cuddy2018}. When contrasting the LOOIC, we clearly see that the corrected models account much better for the data than the uncorrected model. Both the \emph{p}-hacking model and the publication bias models estimate
+larger $\tau$s and smaller $\theta_{0}$s than the classical model, with the publication bias model taking to the extreme $\theta_{0}\approx0$.
+
+Note that the publication bias selection affects not only the observed $x_{i}$s, but also the $\theta_{i}$s. As a consequence, the posterior mean of the selected effect size distribution ($0.34$, not shown in the table and obtained by averaging the posterior means for the $\theta_{i}$s) is much closer to the uncorrected model's estimate than the \emph{p}-hacked estimate. This effect can be most easily understood by looking at a specific $\theta$, for example the $\theta_4$ reported in the right plot of Figure \ref{fig:cuddy2017}, where $x_{4}=0.68$. In this case, the uncorrected estimate of $\theta_{4}$ pushes its value upwards to the meta-analytic mean of $0.46$, while the publication bias estimate is pushed slightly down. The \emph{p}-hacking estimate is different, with much more uncertainty and a heavier tail towards smaller values.
+
+Finally, the surprisingly low value for $\theta_0$ obtained with the publication bias model can be a side effect of the presence of the outlier $x_{12} = 1.72$. Its presence on the right tail of an hypothetical true effect size distribution assumes more ``unseen'' low effects not reported due to publication bias. Indeed, when the outlier is removed from the analysis, the estimate of $\theta_{0}$ increases a lot and goes in line with that estimated by the \emph{p}-hacking model, which, remarkably, does not change. Once the outlier is removed, the fit of the publication bias model increases a lot, also in this case reaching a level close to that of the \emph{p}-hacking model. As expected, the effect of the removal of $x_{12}$ is pretty strong on the estimates of $\tau$. Note, in particular, the decrease in that of the \emph{p}-hacking model (from $0.45$ to $0.09$).
+
+%% <<<<< Example table start (\label{tab:cuddy2018)
+\input{tables/cuddy2018.tex}
+%% example table end >>>>>
+
+In conclusion, the \emph{p}-hacking and publication bias models suggest that there is some sort of selection bias in these studies and the effect of the \emph{power posing} is actually smaller than that obtained by an uncorrected meta-analysis model. Both models have much better fit than the uncorrected one and, therefore, it is reasonable to accept their parameter estimates as more realistic. Note, however, that both models agree on  a value of $\theta_{0}$ that is likely to be different from $0$. The results of Table \ref{tab:cuddy2018}, therefore, support \citet{cuddy2018p}'s conclusion that there is evidence of some positive effect of power posing. We remark, finally, that, at least in this example, the $p$-hacking model does not suffer the presence of an outlier, and, in contrast to the publication bias model, provides similar results (both in term of mean effect and $p$-hacking probabilities) with and without $x_{12}$ in the data.
+
+\subsection{Violent video games\label{subsec:Anderson}}
+
+\citet{anderson2010violent} conducted a large meta-analysis on the effects of violent video games on seven negative outcomes such as aggressive behavior and aggressive cognition, including both longitudinal and experimental data. As part of their analysis, they classified some experiments as \emph{best practice} experiments, which were then used to perform the (main) analyses \citep[for more details, see Table 2 of][]{anderson2010violent}. Suspecting publication bias, \citet{hilgard2017overstated} re-analysed the data using an array of tools to detect and adjust for publication bias. For the outcome variable aggressive cognition, \citet{hilgard2017overstated} noted that ``Application of best-practices criteria seems to emphasize statistical significance, and a knot of experiments just reach statistical significance''. The data can be found on the web \citep{Hilgard2017} and are visualised in Figure \ref{fig:anderson2010}, left plot. In the plot, the best practice experiments are represented by solid circles, all other experiments by hollow squares. Note that an outlier $x=1.33$ has been removed from the data set, and excluded from our analyses. Its removal substantially improves the fit for all the models. 
+
+In this example we fit three models (\emph{p}-hacking, publication bias and uncorrected models) to three data subsets (all experiments, only best practice experiments, without best practice experiments). The outcome variable is aggressive behavior. Our the aim is to answer the following:
+\begin{enumerate}
+\item What are the parameter estimates in each subset for the publication bias, \emph{p}-hacking and classical models?
+\item Which model works best?
+\item Do we have a reason to believe that the best practice experiments are drawn from a different underlying distribution than the other experiments, as \citet{hilgard2017overstated} (and the top left plot of Figure \ref{fig:anderson2010}) suggest?
+\item Is there a large difference between the posterior for $\theta_{0}$ and the mean posterior for the $\theta_{i}$s, as we saw in the previous example?
+\end{enumerate}
+
+%% <<<<< Example table start (\label{tab:anderson2010)
+\input{tables/anderson2010.tex}
+%% example table end >>>>>
+
+The first three questions can be answered by looking at Table \ref{tab:Anderson2010}. The estimates of $\theta_{0}$ are approximately the same for the publication bias and p-hacking models, and roughly half of the uncorrected estimate in all cases. In particular, when all experiments or only the best experiments are considered, there is a noticeable difference (the estimated effects are larger only considering the best experiments). In these two cases, the LOOICs suggest that some \emph{p}-hacking or publication bias is present, as they are smaller than the LOOIC for the uncorrected models. Although the publication bias model seems to work slightly better than the \emph{p}-hacking one, we can state that the two models agree and we have little reason to prefer one to the other. Basically, we can interpret this as converging evidence that the parameter estimates obtained with these two models for $\theta_{0}$ and $\tau$ are in the ballpark of their true values.
+
+Interestingly, when we exclude the experiments non considered ``best practice'' by \citet{anderson2010violent}, the differences between the estimates provided by the corrected and uncorrected models reduce and the LOOICs are almost the same. The question is now if the differences between ``best practice'' and ``non-best practice'' studies reflect a different underlying distribution or not. To answer this question, let us take a look at the posterior densities for $\theta_{0}$ when all experiments are included, as reported in the top right plot of Figure \ref{fig:anderson2010}. Note that, in this case, the posterior distributions computed with the \emph{p}-hacking and publication bias models are very similar (dashed and dotted lines, respectively), which strengthens the agreement seen in Table \ref{tab:Anderson2010} and show that, in this case, we do not experience again the phenomenon of a large difference between the posterior for $\theta_{0}$ and the mean posterior for the $\theta_{i}$s as in the previous example. Incidentally, the answer of question (4) is therefore ``no''.
+
+Back to question (3), we have good reasons to believe that the best practice experiments are drawn from a different underlying distribution than the other experiments if there is negligible overlap between the posteriors for the parameters $\theta_{0}$ and $\tau$ of the underlying distribution. While the uncorrected model seems to support this hypothesis (see bottom right plot of Figure \ref{fig:anderson2010}), the same it is not true if we use a model which correct for $p$-hacking/publication bias (the bottom left plot of Figure \ref{fig:anderson2010} shows the distributions for the publication bias model, those obtained with the \emph{p}-hacking model are indistinguishable). Note that, in this case, the overlap between the posteriors for the different subsets is not negligible, and there is little evidence against the parameter equality. The same conclusion could be informally gotten from Table \ref{tab:Anderson2010} by looking at the posterior standard deviations and posterior means.
+
+\begin{figure}
+\includegraphics[width=0.49\textwidth]{plots/anderson2010}
+\includegraphics[width=0.49\textwidth]{plots/anderson_posterior}
+\includegraphics[width=0.49\textwidth]{plots/anderson_posterior_1}
+\includegraphics[width=0.49\textwidth]{plots/anderson_posterior_2}
+\caption{\label{fig:anderson2010}Violent video games example with outcome variable aggressive behavior. \textbf{(top-left)} Effect sizes. The dotted black line is $1.96/\textrm{sd}$ and the dashed black line is $1.64/\textrm{sd}$. The ticks on the right hand side are the uncorrected meta-analytical means for each group: $0.29$ for the best practices group, $0.08$ for the rest. The outlier $x=1.33$ has been removed from the plot.
+\textbf{(top-right)} Posterior densities for $\theta_{0}$ with all experiments included. The dashed density belongs to the \emph{p}-hacking model, the dotted to the publication bias model, and the solid to the uncorrected model. \textbf{(bottom-left)} Posterior densities for $\theta_{0}$ from the publication bias model. The solid curve is the model with all experiments, the dotted curve the model with the best practice experiments, and the dashed line the model without the best experiments. The posteriors for the \emph{p}-hacking model are similar to this one. \textbf{(bottom-right)} Posterior densities for $\theta_{0}$ (solid line: all experiments; dotted line: best practice experiments only; and dashed line without the best experiments) from the uncorrected meta-analysis model.}
+\end{figure}
+
+\section{Concluding Remarks}\label{sect:conclusions}
+
+In this paper we studied two models to handle the effect of \emph{p}-hacking and publication bias. Although the \emph{p}-hacking model worked really well in the simulation study, we have to admit that the \emph{p}-hacking Scenario described in Section \ref{subsect:p-hacking} is less plausible than the Publication Bias Scenario of Section \ref{subsect:publicationBias}. First, the assumption of Bob's \emph{p}-hacking omnipotence looks very strong. While some researchers are able \emph{p}-hacker, most give up at some point. There is also a problem with the implementation of the idea. Does truncation actually model \emph{p}-hacking in the wild? Analysing \emph{p}-hacking is hard without serious simplifying assumptions. The model we proposed is interpretable and implementable, and it appears to work well in practice, as one can see in the examples of Section \ref{sect:examples}. That said, there is space for further development of models for \emph{p}-hacking.
+
+Again regarding possible further development, we are often interested in understanding and modelling the sources of heterogeneity in a meta-analysis \citep{thompson1994systematic}. A way to do this is to let $\theta_{i}$ linearly depend on covariates. Such covariates are known as \emph{moderators}, but it is usually not so easy to find good moderators. If we extend the one-sided discrete models publication bias and \emph{p}-hacking models to include covariates, we will be able to estimate their effect while keeping the \emph{p}-hacking probability or the selection probability fixed. Another option is to allow the \emph{p}-hacking probability or the selection probability to depend on covariates themselves. For instance, the difficulty of \emph{p}-hacking is likely to increase with $n$, the sample size of the study. Similarly, the selection probability is also likely to be influence by $n$; for example when $n$ is large, null-effects are more reliable.
+
+The notation introduced in Section \ref{sec:Selection Sets} can be used to visualize modifications of the two concrete models used in this paper, visualized in Figure \ref{fig:Plate notation, publication bias and p-hacking}. In the publication bias model, the nuisance parameter $\eta$ (which can include, e.g., the standard deviation $\sigma$) could be put inside the selection plate. In this case, new $\eta$s are drawn until a study is accepted. A possible modification of the \emph{p}-hacking model consists in putting $\theta$ inside the selection set, which makes the researcher draw new $\theta$s every time he attempts a \emph{p}-hack. This could be useful to model scenarios where the hypothesis is not
+known in advance by the researchers.
+
+We saw in the simulations and in Example \ref{subsec:cuddy2018} that the publication bias and the \emph{p}-hacking models can give remarkably different results even with similar priors and the same $\alpha$ vector. A way to react to this situation is to choose the best-fitting model in terms of, for example, LOOIC. Nevertheless, this may result dangerous, and one should be caution, to not risk to over-interpret the results. More safely, one can present the results of both models and try to understand the differences between them, as we did in the examples of Section \ref{sect:examples}. In the publication bias model, it is especially important to be aware of the interpretation of $\theta_{0}$ as the mean of the underlying effect size distribution, not the effect size distribution of the observed studies. Therefore, the best response to the question ``Should one use the \emph{p}-hacking and publication bias model?'' is probably ``Use both!''.
+
+Finally, it could be interesting to model publication bias and \emph{p}-hacking at the same time, combining together the Publication Bias Scenario and the \emph{p}-hacking Scenario. The combined \textbf{Publication Bias--p-hacking Scenario} would look like:
+\begin{quote}
+Bob \emph{p}-hacks his research to a \emph{p}-value given by $\omega$ and sends it to Alice's journal. Alice accepts the paper with probability $w\left(u\right)$. Every unaccepted study is lost.
+\end{quote}
+In this scenario the original density $f^{\star}\left(x_{i}\mid\theta_{i},\eta_{i}\right)$ is transformed twice: First by \emph{p}-hacking, then by publication bias. The resulting model is $f\left(x_{i}\mid\theta_{i},\eta_{i}\right)\propto w\left(u\right)\int_{[0,1]}f_{[0,\alpha]}^{\star}\left(x_{i}\mid\theta_{i},\eta_{i}\right)d\omega\left(\alpha\right)$. This is a reasonable model, but it has the serious drawback of a normalizing constant that is hard to deal with, even when $\omega$ is discrete and $w$ is a step function. Additional work on this problem is required.
+
+\section*{Appendix}
+As mentioned in Section \ref{sect:differences}, any \emph{p}-hacking model can be written on the form of a selection model. Observe that
+\begin{eqnarray*}
+\int_{[0,1]}f_{\left[0,\alpha\right]}^{\star}\left(x_{i}\mid\theta_{i},\eta_{i}, u\right)d\omega\left(\alpha\right) & = & \int_{[0,1]}f\left(x_{i}\mid\theta_{i}\right)P\left(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i}\right)^{-1}d\omega\left(\alpha\right)\\
+ & = & f\left(x_{i}\mid\theta_{i}\right)\int_{[0,u]}P\left(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i}\right)^{-1}d\omega\left(\alpha\right).
+\end{eqnarray*}
+This would be a publication bias model if $h\left(u\right)=\int_{[0,u]}P\left(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i}\right)^{-1}d\omega\left(\alpha\right)$ is bounded for each $u$ and $h\left(u\right)$ is independent of $\theta_{i},\eta_{i}$. While $h\left(u\right)$ can be bounded, it is typically dependent of $\theta_{i},\eta_{i}$, with the fixed effect model under complete selection for significance being a notable exception.
+
+On the other hand, any selection model $f\left(x_{i};\theta_{i},\eta_{i}\right)\rho\left(u\right)$ with $I_{\theta_{i},\eta_{i}}^{-1}=\int f\left(x;\theta_{i},\eta_{i}\right)\rho\left(u\right)du<\infty$ can be written as a mixture model. For then there is a finite measure $d\omega\left(\alpha;\theta_{i},\eta_{i}\right)$ satisfying 
+\[
+\rho\left(u\right)=\int_{[0,u]}\frac{1}{P\left(u\in\left[0,\alpha\right]\mid\theta,\eta\right)}d\omega\left(\alpha;\theta_{i},\eta_{i}\right)
+\]
+Just take $d\omega\left(\alpha;\theta_{i},\eta_{i}\right)=d\rho\left(\alpha\right)P\left(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i}\right)$, where $d\rho\left(\alpha\right)$ is defined by $\int_{0}^{u}d\rho\left(\alpha\right)=\rho\left(u\right)$. The size of the measure is
+\begin{eqnarray*}
+\int_{0}^{1}d\omega\left(\alpha;\theta_{i},\eta_{i}\right) & = & \int_{0}^{1}P\left(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i}\right)d\rho\left(\alpha\right)\\
+ & = & \int_{0}^{1}f\left(u;\theta_{i},\eta_{i}\right)\int_{0}^{u}d\rho\left(\alpha\right)du\\
+ & = & I_{\theta_{i},\eta_{i}}^{-1}
+\end{eqnarray*}
+Hence $I_{\theta,\eta}d\omega'\left(\alpha;\theta_{i},\eta_{i}\right)$ is a probability measure. This probability measure makes 
+\[
+I_{\theta_{i},\eta_{i}}f\left(x_{i};\theta_{i},\eta_{i}\right)\rho\left(u\right)=\int_{[0,1]}f_{\left[0,\alpha\right]}\left(x_{i};\theta_{i},\eta_{i}\right)d\omega'\left(\alpha\right)
+\]
+as can be seen by the following computation,
+\begin{eqnarray*}
+I_{\theta_{i},\eta_{i}}f\left(x_{i};\theta_{i},\eta_{i}\right)\rho\left(u\right) & = & I_{\theta_{i},\eta_{i}}\int_{[0,u]}\frac{f\left(x_{i};\theta_{i},\eta_{i}\right)}{P\left(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i}\right)}d\omega\left(\alpha\right)\\
+ & = & I_{\theta_{i},\eta_{i}}\int_{[0,1]}\frac{f\left(x_{i};\theta,\eta\right)1_{\left[0,\alpha\right]}\left(u\right)}{P\left(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i}\right)}d\omega\left(\alpha\right)\\
+ & = & I_{\theta_{i},\eta_{i}}\int_{[0,1]}f_{\left[0,\alpha\right]}\left(x_{i};\theta_{i},\eta_{i}\right)d\omega\left(\alpha\right)\\
+ & = & \int_{[0,1]}f_{\left[0,\alpha\right]}\left(x;\theta_{i},\eta_{i}\right)d\omega'\left(\alpha\right)
+\end{eqnarray*}
+
+Proposition \ref{prop:One-sided normal discrete probability vector publication bias model-1} shows the form of the one-sided normal step function selection probability publication bias model when it is written as a mixture model of the form \eqref{eq:p-hacking model}. But most such mixture models are not true \emph{p}-hacking models, as the mixing probabilities $\pi_{i}^{\star}$ depend on $\theta$. There is no way for the \emph{p}-hacker to know
+$\theta$, so we cannot regard the publication bias model as a \emph{p}-hacking model.
+
+
+\bibliographystyle{biom}
+\bibliography{main.bib}
+
+\label{lastpage}
+\end{document}
