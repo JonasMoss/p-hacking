@@ -2,7 +2,8 @@
 %\documentclass[useAMS,usenatbib,referee]{biom}
 
 %¤ for arXiv
-\documentclass[preprint, authoryear]{elsarticle}
+\documentclass{article}
+\usepackage{arxiv}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{geometry}
@@ -12,15 +13,35 @@
 \usepackage{listings}
 \usepackage{import}
 \usepackage{tikz}
+\usepackage[colorlinks=true, citecolor = blue]{hyperref}      % hyperlinks
+\usepackage{multirow, amssymb, amsmath, graphicx, arydshln, url}
+\usepackage{algorithm, algorithmicx, algpseudocode}
+\usepackage[T1]{fontenc}
+\usepackage{natbib}
+
 \usetikzlibrary{bayesnet}
 
-\makeatletter
-\def\ps@pprintTitle{%
- \let\@oddhead\@empty
- \let\@evenhead\@empty
- \def\@oddfoot{}%
- \let\@evenfoot\@oddfoot}
-\makeatother
+\title{Modelling publication bias and p-hacking}
+
+\author{
+  Jonas Moss \\
+  Department of Mathematics, University of Oslo\\
+  PB 1053, Blindern, NO-0316, Oslo, Norway \\
+  \it{jonasmgj@math.uio.no} \\ 
+     \And
+  Riccardo De Bin \\
+  Department of Mathematics, University of Oslo\\
+  PB 1053, Blindern, NO-0316, Oslo, Norway \\
+  \it{debin@math.uio.no} \\ 
+}
+
+% \makeatletter
+% \def\ps@pprintTitle{%
+%  \let\@oddhead\@empty
+%  \let\@evenhead\@empty
+%  \def\@oddfoot{}%
+%  \let\@evenfoot\@oddfoot}
+% \makeatother
 
 \theoremstyle{plain}
 \newtheorem{theorem}{\protect\theoremname}
@@ -29,11 +50,6 @@
 \providecommand{\examplename}{Example}
 \providecommand{\theoremname}{Theorem}
 %% end for arxiv
-
-\usepackage{multirow, amssymb, amsmath, graphicx, arydshln, url}
-\usepackage{algorithm, algorithmicx, algpseudocode}
-\usepackage[T1]{fontenc}
-\usepackage{natbib}
 
 \def\bSig\mathbf{\Sigma}
 \newcommand{\VS}{V\&S}
@@ -47,6 +63,8 @@
 \newfloat{algorithm}{tbp}{loa}
 \providecommand{\algorithmname}{Algorithm}
 \floatname{algorithm}{\protect\algorithmname}
+
+
 %%%% for biometrics
 % \title[Modelling publication bias and p-hacking]{Modelling publication bias and p-hacking}
 
@@ -57,18 +75,14 @@
 %%¤¤ end for biometrics
 
 \begin{document}
-
+\maketitle
 %%%% for arXiv
-\begin{frontmatter}
-\title{Modelling publication bias and p-hacking}
-\author{Jonas Moss}
-\ead{jonasmgj@math.uio.no}
-\author{Riccardo De Bin}
-\address{Department of Mathematics, University of Oslo, PB 1053, Blindern, NO-0316, Oslo, Norway}
 \begin{abstract}
 Publication bias and \emph{p}-hacking are two well-known phenomena that strongly affect the scientific literature and cause severe problems in meta-analysis studies. Due to these phenomena, the assumptions of meta-analyses are seriously violated and the results of the studies cannot be trusted. While publication bias is almost perfectly captured by the model of Hedges, \emph{p}-hacking is much harder to model and no definitive solution has been found yet. In this paper we propose to model both publication bias and \emph{p}-hacking with selection models. We derive some properties for these models, and we contrast them both formally and via simulations. Finally, two real data examples are used to show how the models work in practice.
 \end{abstract}
-\end{frontmatter}
+
+\keywords{meta-analysis \and publication bias \and p-hacking}
+
 %%%% end for arXiv
 
 %%%% for biometrics
@@ -99,7 +113,7 @@ Publication bias and \emph{p}-hacking are two well-known phenomena that strongly
 
 \section{Introduction}
 
-Meta-analyses are powerful tools for statistical analysis. As the name suggests (the Greek \emph{meta} meaning ``after''), they consist in combining information from existing studies to better evaluate a quantity of interest, for example the effect of a specific drug or therapy. Being able to aggregate information from multiple studies generally means higher statistical power, higher accuracy in estimation and greater reproducibility. Unfortunately, it is not always possible to believe in the results of meta-analyses, because some model assumptions may be seriously violated. In particular, a meta-analysis must not be based on a biased selection of studies, and cannot include biased results. Publication bias \citep{sterling1959publication} and \emph{p}-hacking \citep{simmons2011false} are the most common phenomena that violate these assumptions. 
+Meta-analysis the quantitative combination of information from different studies, for example of the effect of some drug or therapy. Aggregating information from multiple studies generally means higher statistical power, higher accuracy in estimation and greater reproducibility. Unfortunately, it is not always possible to believe in the results of meta-analyses, because some model assumptions may be seriously violated. In particular, a meta-analysis must not be based on a biased selection of studies, and cannot include biased results. Publication bias \citep{sterling1959publication} and \emph{p}-hacking \citep{simmons2011false} are the most common phenomena that violate these assumptions. 
 
 Publication bias, also known as \emph{file drawer problem} \citep[see, e.g.,][]{iyengar1988selection} denotes that phenomenon for which a study with a smaller \emph{p}-value is more likely to be published than a study with a higher \emph{p}-value. Publication bias is a well known issue, and several approaches have been proposed to tackle it. Two famous examples are the trim-and-fill \citep{duval2000trim} and fail-safe $N$ \citep{becker2005failsafe} methods. Despite being proposed by statisticians, neither of them are \emph{bona fide} statistical models with likelihoods and properly motivated estimation strategies. From a statistical point of view, the most important class of models which are used to deal with publication bias are selection models. They were first studied by \citet{hedges1984estimation} for $F$-distributed variables with a cut-off at $0.05$, and extended to the setting of $t$-values by \citet{iyengar1988selection}. \citet{hedges1992modeling} proposed a random effects publication bias model with more than one cut-off, while \citet{citkowicz2017parsimonious} used beta distributed weights.
 
@@ -300,7 +314,7 @@ Let $f\left(x,\theta\mid\eta\right)=f\left(x\mid\theta,\eta\right)p\left(\theta\
 be the joint density of a random effects meta-analysis, where $x$ is the effect size, $\theta$ is the study-specific parameter of interest, and $\eta$ is a study-specific nuisance parameter such as the sample size of the study. The left plot of Figure \ref{fig:Plate notation, simple example} is a visualization of $f\left(x,\theta\right)$. If we have more than one study to analyse, we will have to work with product density $\prod_{i=1}^{n}f\left(x_{i},\theta_{i}\mid\eta_{i}\right)$ instead of the stand-alone density $f\left(x,\theta\mid\eta\right)$. This is visualised in the middle plot of Figure \ref{fig:Plate notation, simple example}  by drawing a solid plate around the pair $\left(x,\theta\right)$. When we are dealing with a fixed effects meta-analysis, in which $\theta$ is fixed, the plate should be drawn around $x$ only (Figure \ref{fig:Plate notation, simple example}, right graph). 
 
 
-\subsection{Publication bias and $p$-hacking models\label{subsec:Selection sets, meta analysis}}
+\subsection{Publication bias and \textit{p}-hacking models\label{subsec:Selection sets, meta analysis}}
 
 To visualize selection models based on $p$-values, we must make some modifications to the original graph: (i) add the $p$-value node $u$, (ii) add an arrow from $x$ to $u$. (iii) since the $p$-value $u$ usually depends on more information than just $x$, such as the standard deviation of $x$, add an arrow from $\eta$ (which represents the extra information) to $u$ as well; (iv) add the selection node $s$ and an arrow from $u$ to $s$. If $u$ is the only parent of $s$, we are dealing with selection models \emph{only} based on
 \emph{p}-values. 
@@ -398,6 +412,8 @@ We generate data under three scenarios: (i) With no publication bias nor \emph{p
 For each parameter combination we estimate the \textit{p}-hacking model and the publication bias model. Both models have normal likelihoods and normal effect size distributions. We use one-sided significance cut-offs at $0.025$ and $0.05$ for both the publication bias and the \emph{p}-hacking models. We use standard Gaussian priors for $\theta_0$, a standard half normal prior for $\tau$, and, in the \emph{p}-hacking model, a uniform Dirichlet prior for $\pi$. For the $\rho$ in the publication bias model we use a a uniform Dirichlet that constrains $\rho_{1}\geq\rho_{2}\geq\ldots\geq\rho_{j}$. That is, the publication probability is a decreasing function of the \emph{p}-value.
 
 All of these priors are reasonable. A standard normal for $\theta_0$ is reasonable because we know that $\theta_0$ has a small magnitude in pretty much any meta-analysis, and most are clustered around $0$. A half normal prior for $\tau$ is also reasonable, as $\tau$ is much more likely to be very small than very big. The priors for $\rho$ and $\pi$ are harder to reason about, but a uniform Dirichlet seems like a natural and neutral choice. These are the standard prior of the $\mathtt{R}$ package $\mathtt{publipha}$ \citep{publipha}, which we used for all computations.
+
+See the OSF repository for this paper (\url{https://osf.io/tx8qn/}) for the code used to run the simulations and its raw data.
 
 \subsection{Results}
 \paragraph{No publication bias, no \emph{p}-hacking} The results under this scenario are reported in Table \ref{tab:Simulation_classical}. When the amount of heterogeneity is reasonable ($\tau = 0.1$) both the \emph{p}-hacking and the publication bias perform well. The publication bias model performs slightly worse than the \emph{p}-hacking model when the mean effect size is large ($\theta_0 = 0.8$) and the number of studies small ($n=5$), but it catches up as $n$ increases. Much more interesting is the situation with $\tau = 0.5$. Here we clearly see that the \emph{p}-hacking model outperforms the publication bias model, with the latter tending to underestimate the mean effect. While increasing $n$ alleviates the problem, we note there is still a substantial underestimation of $\theta_0$ even in the case of $n = 100$. In contrast, both models seems to estimate $\tau$ pretty well. As a take home message, we can say that it is safe to use the \emph{p}-hacking model when there is no \emph{p}-hacking or publication bias, but less safe to use the publication bias one.
