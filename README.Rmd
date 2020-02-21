@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 <!--[![DOI](https://zenodo.org/badge/120678148.svg)](https://zenodo.org/badge/latestdoi/120678148) -->
 
 Repository for the paper "Modelling publication bias and *p*-hacking". Contains the
-code required to reproduce the [arXiv version](https://arxiv.org/abs/1911.12445) of the paper.
+code required to reproduce the [arXiv version](https://arxiv.org/abs/1911.12445) of the paper. This repository is associated with an [OSF repository](https://osf.io/tx8qn/).
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(out.width='750px', dpi=200)

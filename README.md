@@ -17,7 +17,8 @@
 
 Repository for the paper “Modelling publication bias and *p*-hacking”.
 Contains the code required to reproduce the [arXiv
-version](https://arxiv.org/abs/1911.12445) of the paper.
+version](https://arxiv.org/abs/1911.12445) of the paper. This repository
+is associated with an [OSF repository](https://osf.io/tx8qn/).
 
 ## Overview
 
