@@ -13,6 +13,7 @@
 \usepackage{listings}
 \usepackage{import}
 \usepackage{tikz}
+\usepackage{enumitem}
 \usepackage{csquotes}
 \usepackage[colorlinks=true, citecolor = blue]{hyperref}      % hyperlinks
 \usepackage{multirow, amssymb, amsmath, graphicx, arydshln, url}
@@ -203,7 +204,7 @@ is transformed into the \textit{p}-hacked density
 \begin{equation}\label{eq:p-hacking model}
 f(x_{i};\theta_{i},\eta_{i})=\int_{[0,1]}f_\alpha^{\star}(x_{i};\theta_{i},\eta_{i}, u)d\omega(\alpha),
 \end{equation}
-where $f_\alpha^{\star}$ is the density $f^{\star}$ truncated so that the \textit{p}-value $u\in\left[0,\alpha\right]$. Let us call the distribution $\omega$ the \emph{propensity to p-hack}. It might depend on covariates, but should not depend on $\theta_{i}$, as the researcher cannot know the true effect size of her/his study. While publication bias model (\ref{eq:Publication bias model}) is a selection model, the \textit{p}-hacking model (\ref{eq:p-hacking model}) is clearly a mixture model. The publication bias can also be written as a mixture model on the same form as the \textit{p}-hacking model, but then $\omega$ will depend on $\theta$, see the appendix. We stress the fact that the model \eqref{eq:p-hacking model} is not a publication bias model. Although the \textit{p}-hacking model can be written as a selection model (i.e., on the form of \eqref{eq:Publication bias model}), in general the publication probability will depend on the true effect size, which violates an obvious condition for a model to be considered a publication bias model. See section \ref{sect:differences} for a detailed comparison of the two models.
+where $f_\alpha^{\star}$ is the density $f^{\star}$ truncated so that the \textit{p}-value $u\in\left[0,\alpha\right]$. Let us call the distribution $\omega$ the \emph{propensity to p-hack}. It might depend on covariates, but should not depend on $\theta_{i}$, as the researcher cannot know the true effect size of his study. While publication bias model (\ref{eq:Publication bias model}) is a selection model, the \textit{p}-hacking model (\ref{eq:p-hacking model}) is clearly a mixture model. The publication bias can also be written as a mixture model on the same form as the \textit{p}-hacking model, but then $\omega$ will depend on $\theta$, see the appendix. We stress the fact that the model \eqref{eq:p-hacking model} is not a publication bias model. Although the \textit{p}-hacking model can be written as a selection model (i.e., on the form of \eqref{eq:Publication bias model}), in general the publication probability will depend on the true effect size, which violates an obvious condition for a model to be considered a publication bias model. See section \ref{sect:differences} for a detailed comparison of the two models.
 
 Just as the publication bias model requires a choice of $w$, the \textit{p}-hacking model requires a choice of $\omega$. A \textit{p}-hacking scientist is motivated to \textit{p}-hack to the $0.05$ level, maybe to the $0.01$ or $0.025$, but never to a level such as $0.07$ or $0.37$. This motivates the discrete \textit{p}-hacking probability distribution
 $$\omega(\alpha\mid\pi)=\sum_{j=1}^{J}\pi_{j}1_{(0,\alpha_{j}]}(\alpha)$$
@@ -307,15 +308,21 @@ be the joint density of a random effects meta-analysis, where $x$ is the effect 
 
 \subsection{Publication bias and \textit{p}-hacking models\label{subsec:Selection sets, meta analysis}}
 
-To visualize selection models based on \textit{p}-values, we must make some modifications to the original graph: (i) add the \textit{p}-value node $u$, (ii) add an arrow from $x$ to $u$. (iii) since the \textit{p}-value $u$ usually depends on more information than just $x$, such as the standard deviation of $x$, add an arrow from $\eta$ (which represents the extra information) to $u$ as well; (iv) add the selection node $s$ and an arrow from $u$ to $s$. If $u$ is the only parent of $s$, we are dealing with selection models only based on
+To visualize selection models based on \textit{p}-values, we must make some modifications to the original graph:
+
+\begin{enumerate}[label=\roman*]
+\item Add the \textit{p}-value node $u$.
+\item Add an arrow from $x$ to $u$. 
+\item Since the \textit{p}-value $u$ usually depends on more information than just $x$, such as the standard deviation of $x$, add an arrow from $\eta$ (which represents the extra information) to $u$ as well.
+\item Add the selection node $s$ and an arrow from $u$ to $s$. If $u$ is the only parent of $s$, we are dealing with selection models only based on
 \textit{p}-values. 
+\end{enumerate}
 
-The placement of dashed and solid plates, instead, depends on which model we want to use:
-\begin{itemize}
-\item \textit{Publication bias}. The idea behind the publication bias model is that a completely new study is done whenever the last one failed to be published. This implies that $\theta$ and $x$ are sampled together. The left plot of Figure \ref{fig:Plate notation, publication bias and p-hacking} shows the direct acyclic graph of the normal publication bias model defined in Proposition \ref{prop:One-sided normal discrete probability vector publication bias model-1}. In this particular case, $\eta$ corresponds to $\sigma$, the standard deviation. Moreover, $u$ is a \textit{p}-value, $\theta_{0}$ is the mean of the effect size distribution, $\tau$ is the standard deviation of the effect size distribution, and $\rho$ is the selection probability function. The variable $Z$ lives on the unit interval, and encodes the editor's decision to publish: If the observed \textit{p}-value is less than $Z$, the study is published. Importantly, $Z$ is placed inside the selection set because a new \textit{p}-value cut-off decision is made for each study received. Since $x$ and $\theta$ are sampled together, the selection mechanism modifies $p(\theta)$.%, as can be seen in the example \ref{exa:Publication bias, theta distribution} here below.
+The placement of dashed and solid plates depends on which model we want to use.
 
-\item \textit{p}-hacking. In the \textit{p}-hacking scenario, the \textit{p}-hacker will hack her/his study all the way to significance, regardless of $\theta$. This means that $\theta$ and $x$ are sampled separately and $\theta$ must be placed outside the selection set. Moreover, the decision of how much to \textit{p}-hack is not reevaluated at each attempt. Consequently, the random variable that controls the \textit{p}-hacking decisions, analogously to the publication bias model, $Z$, is also placed outside the selection graph. This is the case, for example, of an author who decides to \textit{p}-hack to level $\alpha$ ($Z = \alpha$): he acts on $x$ to obtain the desired \textit{p}-value, whatever the sampled $\theta$ is. The graphical representation of this model is shown in the right plot of Figure \ref{fig:Plate notation, publication bias and p-hacking}. Since $x$ and $\theta$ are not sampled together, the selection mechanism does not modify $p(\theta)$.
-\end{itemize}
+The idea behind the publication bias model is that a completely new study is done whenever the last one failed to be published. This implies that $\theta$ and $x$ are sampled together. The left plot of Figure \ref{fig:Plate notation, publication bias and p-hacking} shows the direct acyclic graph of the normal publication bias model defined in Proposition \ref{prop:One-sided normal discrete probability vector publication bias model-1}. In this particular case, $\eta$ corresponds to $\sigma$, the standard deviation. Moreover, $u$ is a \textit{p}-value, $\theta_{0}$ is the mean of the effect size distribution, $\tau$ is the standard deviation of the effect size distribution, and $\rho$ is the selection probability function. The variable $Z$ lives on the unit interval, and encodes the editor's decision to publish: If the observed \textit{p}-value is less than $Z$, the study is published. Importantly, $Z$ is placed inside the selection set because a new \textit{p}-value cut-off decision is made for each study received. Since $x$ and $\theta$ are sampled together, the selection mechanism modifies $p(\theta)$.%, as can be seen in the example \ref{exa:Publication bias, theta distribution} here below.
+
+In the \textit{p}-hacking scenario, the \textit{p}-hacker will hack his study all the way to significance, regardless of $\theta$. This means that $\theta$ and $x$ are sampled separately and $\theta$ must be placed outside the selection set. Moreover, the decision of how much to \textit{p}-hack is not reevaluated at each attempt. Consequently, the random variable that controls the \textit{p}-hacking decisions, analogously to the publication bias model, $Z$, is also placed outside the selection graph. This is the case, for example, of an author who decides to \textit{p}-hack to level $\alpha$ ($Z = \alpha$): he acts on $x$ to obtain the desired \textit{p}-value, whatever the sampled $\theta$ is. The graphical representation of this model is shown in the right plot of Figure \ref{fig:Plate notation, publication bias and p-hacking}. Since $x$ and $\theta$ are not sampled together, the selection mechanism does not modify $p(\theta)$.
 
 \begin{figure}
 \begin{center}     
@@ -327,7 +334,6 @@ The placement of dashed and solid plates, instead, depends on which model we wan
 \caption{\label{fig:Plate notation, publication bias and p-hacking} Directed acyclic graphs for: {\bf (left)}
 the publication bias model; {\bf (right)} the \textit{p}-hacking model. The dashed plates enclose the selection sets and the the solid plates enclose variables that are repeated together.}
 \end{figure}
-
 
 \subsection{Equivalence in special cases}
 The publication bias model defined in Proposition \ref{prop:One-sided normal discrete probability vector publication bias model-1} and the \textit{p}-hacking model are equivalent when $\sigma_{i}$ is fixed across studies. This holds both for the fixed and random effects models. To see this, let $\pi$ be any probability vector for the \textit{p}-hacking model and solve the invertible linear system $\pi^{\star}(\rho)=\pi$ for $\rho$. There is no guarantee for the models to be equivalent when $\sigma_{i}$ is not fixed, see the appendix.
@@ -391,11 +397,11 @@ The publication bias model defined in Proposition \ref{prop:One-sided normal dis
 %
 %\subsection{Publication bias model versus \textit{p}-hacking model}
 Before looking at the performances of the two models in real examples, let us compare them in a simulation study. We want to answer three questions about the \textit{p}-hacking and publication bias models:
-\begin{itemize}
+\begin{enumerate}[label=\roman*]
 \item Do they work even in the absence of \textit{p}-hacking and publication bias? Although we know these phenomena are ubiquitous and should always be corrected for, it is still important that the models do not distort the results when there is no publication bias or \textit{p}-hacking.
 \item How do they behave in extreme situations? In particular, we are interested in how the models behave when $n$ is small, which is a pretty common situation in most meta-analysis studies, and when the heterogeneity is large.
 \item Are the models distinguishable in practice? In particular, we want to check if the \textit{p}-hacking model works under the publication bias scenario and vice versa.
-\end{itemize}
+\end{enumerate}
 
 \subsection{Settings}
 We generate data under three scenarios: (i) With no publication bias nor \textit{p}-hacking, using the normal random effect meta-analysis model. (ii) Under the presence of publication bias, using the model \eqref{eq:Random effects, publication bias}. (iii) Under presence of \textit{p}-hacking, using the model random effects normal \textit{p}-hacking model. The study-specific variances $\sigma_{i}^{2}$ are sampled uniformly from $\left\{ 20,\ldots80\right\} $. The size of the meta-analyses are $n = 5, 30, 100$, corresponding to small, medium and large meta-analyses, while the means for the effect size distribution are $0, 0.2, 0.8$. The value $\theta_0 = 0$ is interesting as it corresponds to no expected effect, while the positive $\theta_0$s are the cut-off for small and large effect sizes of \citet[][pages 24 -- 27]{cohen1988statistical}. The standard deviations of the random effects distributions are $\tau=0.1$ and $\tau=0.5$. While $\tau = 0.1$ is a reasonable amount of heterogeneity, $\tau=0.5$ is a relatively large amount of heterogeneity that provides a challenge for the models. The probability of acceptance of a paper are simulated to be $1$ if the \textit{p}-value is between $0$ and $0.025$, $0.7$ if the \textit{p}-value is between $0.025$ and $0.05$, and $0.1$ otherwise. For the same intervals, the \textit{p}-hacking probabilities are $0.6$, $0.3$ and $0.1$. 
