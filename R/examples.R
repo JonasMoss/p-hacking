@@ -93,3 +93,6 @@ loo_cuddy_sds = lapply(loo_cuddy, function(x) x$estimates[3, 2])[c(3, 1, 2)]
 loo_no = lapply(ma_cuddy2018_no,loo)
 loo_no_means = lapply(loo_no, function(x) x$estimates[3, 1])[c(3, 1, 2)]
 loo_no_sds = lapply(loo_no, function(x) x$estimates[3, 2])[c(3, 1, 2)]
+
+## Auxilliary values
+mean(publipha::extract_theta(ma_cuddy2018$psma)) # 0.37

@@ -122,9 +122,9 @@ dev.off()
 jpeg("plots/cuddy2018_posterior.jpg", 
      width = 8, height = 8, units = 'in', res = 300,
      quality = 100)
-index = 4
+index = 2
 plot(density(extract_theta(ma_cuddy2018$cma, identity, i = index), adjust = 2), 
-     xlim = c(-0.7, 1.3),
+     xlim = c(-1.3, 1.3),
      main = NA, sub = NA, xlab = "Effect Size", "Density",
      lwd = 2,
      lty = 1)
@@ -134,9 +134,11 @@ lines(density(extract_theta(ma_cuddy2018$phma, identity, i = index), adjust = 2)
 lines(density(extract_theta(ma_cuddy2018$psma, identity, i = index), adjust = 2),
       lwd = 2, 
       lty = 3)
-axis(side = 1, 
+axis(side = 3, 
      at = dat.cuddy2018$yi[index], 
      label = round(dat.cuddy2018$yi[index], 2))
 abline(v = dat.cuddy2018$yi[index], col = "grey")
 dev.off()  
+## Auxilliary values
+# publipha::extract_theta(ma_cuddy2018_no$phma)[2]
 })
