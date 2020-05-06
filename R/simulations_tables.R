@@ -11,8 +11,8 @@ make_table = function(tab, caption, label, file) {
   indices = c(1, 6 + 1, 2, 6 + 2, 3, 6 + 3, 4, 6 + 4, 5, 6 + 5, 6, 6 + 6)
   tab = (t(tab))[, indices]
   
-  tab = sapply(0:5, function(i) msd(pretty(r_ph[, 2*i + 1]), 
-                                    pretty(r_ph[, 2*i + 2])))
+  tab = sapply(0:5, function(i) msd(pretty(tab[, 2*i + 1]), 
+                                    pretty(tab[, 2*i + 2])))
   
   tab = cbind(c("\\multirow{9}{*}{$0.1$}", "", "", "", "", "", "", "", "", 
                 "\\multirow{9}{*}{$0.5$}", "", "", "", "", "", "", "", ""), 
