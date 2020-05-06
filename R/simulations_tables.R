@@ -69,7 +69,7 @@ tab_ph = make_table(tab = results_ph,
                     from the \\textit{p}-hacking model with cut-offs at
                     $0.025$ and $0.05$, with \\textit{p}-hacking probabilities
                     equal to $0.6$, $0.3$, and $0.1$ in the intervals
-                    $[0, 0.025)$, $[0.025, 0.05)$, and $[0.5, 1]$}",
+                    $[0, 0.025)$, $[0.025, 0.05)$, and $[0.5, 1]$",
                     label = "tab:Simulation_ph",
                     file = "tables/simulations_ph.tex")
 
