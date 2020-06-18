@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage[colorlinks=true, citecolor = blue]{hyperref}      % hyperlinks
+\usepackage{multirow, amssymb, amsmath, graphicx, arydshln, url}
+\usepackage{algorithm, algorithmicx, algpseudocode}
+\usepackage[T1]{fontenc}
+\usepackage{natbib}
+
+
+\title{Supporting Information for ``Modelling publication bias and \textit{p}-hacking''\\ by Jonas Moss and Riccardo De Bin}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Web Appendix A}
+
+
+\begin{algorithm}[!h]
+\begin{algorithmic}[1]
+	\State $x^{0}\sim p(x)$.
+	\For{$i$ in $i=0,1,\ldots$}
+		\If{$s\mid x^i = 1$}         
+			\State Report $x^i$.           
+		\Else         
+			\State $x_{H}^{i+1}\sim p(x_{H}^{i}\mid x_{H^{c}}^{0})$.        
+		\EndIf  
+	\EndFor  
+\end{algorithmic}
+\caption{\label{alg:Selection model}The selection model $q_{H}(x)$.}
+\end{algorithm}
+
+\section*{Web Appendix B}
+
+\paragraph{Proof of Proposition 2}
+
+We only need to show that $q_{H}(x)$ integrates to $1$. \begin{eqnarray*}
+\int q_{H}(x)dx & = & \int\frac{p(s=1)}{p(s=1\mid x_{H^{c}})}p(x)dx\\
+ & = & \int\frac{p(s=1\mid x_{H},x_{H^{c}})}{p(s=1\mid x_{H^{c}})}p(x_{H^{c}}\mid x_{H})p(x_{H})dx_{H^{c}}dx_{H}\\
+ & = & \int\frac{p(s=1\mid x_{H^{c}})}{p(s=1\mid x_{H^{c}})})p(x_{H^{c}})dx_{H^{c}})\\
+ & = & 1
+\end{eqnarray*}
+
+
+\section*{Web Appendix C}
+As mentioned in Section 3, any \textit{p}-hacking model can be written on the form of a selection model. Observe that
+\begin{eqnarray*}
+\int_{[0,1]}f_\alpha^{\star}(x_{i}\mid\theta_{i},\eta_{i}, u)d\omega(\alpha) & = & \int_{[0,1]}f(x_{i}\mid\theta_{i})P(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})^{-1}d\omega(\alpha)\\
+ & = & f(x_{i}\mid\theta_{i})\int_{[0,u]}P(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})^{-1}d\omega(\alpha).
+\end{eqnarray*}
+where $f_\alpha^{\star}$ is the density $f^{\star}$ truncated so that the \textit{p}-value $u\in\left[0,\alpha\right]$. This is a publication bias model if $$h(u)=\int_{[0,u]}P(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})^{-1}d\omega(\alpha)$$ is bounded for each $u$ and $h(u)$ is independent of $\theta_{i},\eta_{i}$. While $h(u)$ can be bounded, it is typically dependent of $\theta_{i},\eta_{i}$, with the fixed effect model under complete selection for significance being a notable exception.
+
+On the other hand, any selection model $f(x_{i};\theta_{i},\eta_{i})\rho(u)$ with $I =\int f(x;\theta_{i},\eta_{i})\rho(u)du<\infty$ can be written as a mixture model. For then there is a finite measure $d\omega(\alpha;\theta_{i},\eta_{i})$ satisfying 
+\[
+\rho(u)=\int_{[0,u]}\frac{1}{P(u\in\left[0,\alpha\right]\mid\theta,\eta)}d\omega(\alpha;\theta_{i},\eta_{i})
+\]
+Just take $d\omega(\alpha;\theta_{i},\eta_{i})=d\rho(\alpha)P(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})$, where $d\rho(\alpha)$ is defined by $\int_{0}^{u}d\rho(\alpha)=\rho(u)$. The size of the measure is
+\begin{eqnarray*}
+\int_{0}^{1}d\omega(\alpha;\theta_{i},\eta_{i}) & = & \int_{0}^{1}P(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})d\rho(\alpha)\\
+ & = & \int_{0}^{1}f(u;\theta_{i},\eta_{i})\int_{0}^{u}d\rho(\alpha)du\\
+ & = & I
+\end{eqnarray*}
+Hence $I_{\theta,\eta}d\omega'(\alpha;\theta_{i},\eta_{i})$ is a probability measure. This probability measure makes 
+\[
+I^{-1}f(x_{i};\theta_{i},\eta_{i})\rho(u)=\int_{[0,1]}f_\alpha(x_{i};\theta_{i},\eta_{i})d\omega'(\alpha)
+\]
+as can be seen by the following computation,
+\begin{eqnarray*}
+I^{-1}f(x_{i};\theta_{i},\eta_{i})\rho(u) & = & I^{-1}\int_{[0,u]}\frac{f(x_{i};\theta_{i},\eta_{i})}{P(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})}d\omega(\alpha)\\
+ & = & I^{-1}\int_{[0,1]}\frac{f(x_{i};\theta,\eta)1_{\left[0,\alpha\right]}(u)}{P(u\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})}d\omega(\alpha)\\
+ & = & I^{-1}\int_{[0,1]}f_\alpha(x_{i};\theta_{i},\eta_{i})d\omega(\alpha)\\
+ & = & \int_{[0,1]}f_\alpha(x;\theta_{i},\eta_{i})d\omega'(\alpha)
+\end{eqnarray*}
+
+Proposition 1 shows the form of the one-sided normal step function selection probability publication bias model when it is written as a mixture model of the form (5). But most such mixture models are not true \textit{p}-hacking models, as the mixing probabilities $\pi_{i}^{\star}$ depend on $\theta$. There is no way for the \textit{p}-hacker to know
+$\theta$, so we cannot regard the publication bias model as a \textit{p}-hacking model.
+
+
+\end{document}

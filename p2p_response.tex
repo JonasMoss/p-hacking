@@ -1,0 +1,225 @@
+\documentclass[11pt]{article}
+\usepackage{color, url}
+
+ %\raggedbottom
+\tolerance=10000 \marginparwidth 0pt \oddsidemargin 0pt
+\evensidemargin 0pt \marginparsep 0pt \marginparwidth 2in
+\textwidth 6.0in
+\textheight 8.5in
+\topmargin 0pt
+
+\begin{document}
+
+{\bf
+\noindent Manuscript ID:  BIOM2020126M  \\
+Title: Modelling publication bias and p-hacking \\
+by J.\ Moss and R.\ De Bin}
+
+
+\vglue .5in \noindent Dear Editor,
+
+
+\vspace{0.5cm}
+
+\noindent We thank you for the opportunity to revise our paper. We attach a copy of the new  version of the paper together with a commentary on the specific points raised by the Associate Editor and the Referee. As requested, we reduced the manuscript by 2.5 pages.
+
+
+\vspace{0.3cm}
+
+\noindent We look forward to hearing from you.% soon.
+
+\vglue .2in \noindent With best regards,
+
+\vglue .5in
+\noindent 
+Jonas Moss\\
+Riccardo De Bin \\
+
+\pagestyle{empty}
+\newpage
+
+
+
+\parindent=0pt
+%\baselineskip=2.0\normalbaselineskip
+\parskip=4pt plus 1.5pt minus 1pt
+
+
+{\bf COMMENTARY} \\
+
+We are grateful for the helpful comments of the Associate Editor and the Referee which led to an improved version of our paper. We hope to have clarified all issues and that this new version is acceptable for publication in Biometrics.
+
+\vspace{2cm}
+
+\begin{center}
+ASSOCIATE EDITOR
+\end{center}
+
+\begin{enumerate}
+
+\item \emph{``Although there are only a few formulas in section 2, the notation used in the formulas makes it very difficult to follow. For example, the key formulas in (1), (3), and (5) involved $u$ and $\alpha$ which should be related to $x_i$, $\eta_i$. But the paper did not make it clear how they are related. In some cases, a reader may guess the relationship from the context. In other cases, the reader is left in the dark.''}
+
+
+We thank the Associate Editor to point out this issue. We made the dependencies more explicit by relating $w(u_i)$ and $\omega(\alpha)$ to the other quantities. In this regard, we think that following the Associate Editor's suggestion contained in point 2 helped a lot to improve the readability of the formulas.
+
+
+
+\item \emph{``The selection modeling approach discussed in the first part of section 3 is useful for understanding the formulation of the publication bias and the p-value hacking in this paper. I suggest the authors to describe the formulation first and then connect respectively to the publication bias problem and the p-value hacking problem. With appropriate care to the notation, this may help to clarify the confusion in section 2. For example, the selection function w(u) can be made easy to be understood by using selection probability as
+$$
+P(s = 1 | x_i, \theta_i, \eta_i) = w(u(x_i, \eta_i)),
+$$
+where $u(x_i, \eta_i)$ denotes p-value of a study. The actual observed data are the result of the selection. Specifying the type of selection functions for obtaining formula (5) and demonstrating the relationship to the mixture model formation will also help. It may also be better to discuss the normal modeling framework first and then mention how the framework can be extended to more general distributional forms.''}
+
+
+This is a good suggestion that we were happy to follow. The first part of Section 3, introducing the selection models, has now been moved to the beginning of Section 2, into a new subsection 2.2. The rest of Section 3 has been appended to the same section (Section 2), into a new subsection 2.5.
+
+As suggested by the Associate Editor, we also used the selection probability to introduce $w(u_i)$ and added a sentence on the selection set for a selection model representation of the $p$-hacking model. Due to space reasons, we kept the description of the relationship between its selection model and mixture model representation in the Web Appendix.
+
+
+
+\item \emph{``It is not clear how important the graphical representation of the selection and mixture models is in the second part of Section 3.''}
+
+
+We think that the graphical representations can be very helpful to understand the difference between the two models. Nonetheless, we are aware of the space limitations and we moved the graphical representations to the Web Appendix.
+
+
+\item \emph{`` The paper can be made substantially short by removing unimportant and sometimes misleading statements. For example, the discussion in the third paragraph on page 5 seems mostly minor or irrelevant to the problem. I had a hard time to understand the statement such as ``every variable is sampled until $s = 1$'' which appears in many places in section 3. Do you mean changing (or hacking?) such variables?''}
+
+
+We shortened the manuscript of 2/3 pages, as explicitly asked by the Editor. In the new version, all the sentences like ``every variable is sampled until $s = 1$'' have been removed and the concept related to the selection, instead.
+
+
+
+\item \emph{``The $\eta_i$s are treated as nuisance parameters. But in actual test, it is often a statistic, such as the estimate of standard error rather than the (scaled) variance parameter in the normal model. Does this treatment affect the distribution recovery in either problem?''}
+
+We added a sentence in the discussion reporting this issue, in the part related to possible extensions. Nevertheless, we decided not to modify our approach to the problem because, in the meta-analysis literature, it is standard practice to treat the standard deviations as nuisance parameters. We provided a reference in the text to justify our choice.
+
+\item \emph{``The successful correction of the public bias and the p-value hacking appears to depend on the specific parametric model used. More discussion on the identifiability of the model needs to be included, especially when normal models are not assumed.''}
+
+Due to space constraints, we could not address this issue on the main text, so we provided a proof of the model identifiability in a novel Web Appendix (Web Appendix D). A reference to it has been added at the end of (what is now) Section 3.
+\end{enumerate}
+
+\vspace{3cm}
+
+\begin{center}
+REFEREE
+\end{center}
+
+\begin{itemize}
+\item \emph{``When I read the introduction, I feel that the authors tend to oversell the proposed methods. For example, on page 1, they claimed that the trim and fill and fail-safe N methods are not bona fide statistical methods ``with likelihoods and properly motivated estimation strategies.'' Although I'm not sure if this is true for the fail-safe N method, the trim and fill method was published in JASA T\&M, and I can hardly imagine that someone thought it is not a ``bona fide'' statistical method. Perhaps I have some misunderstanding about ``bona fide'' referred by the authors and I understand that there are several limitations of the trim and fill method, but a statistical method do not need to be based on likelihoods. In fact, the trim and fill method is a non-parametric method.''}
+
+
+We agree that our phrasing was not fortunate, there was no intention to discredit the two approaches: what we meant is that the trim and fill and fail-safe N methods do not try to model the bias explicitly. We rephrased the sentence to avoid confusion.
+
+
+\item \emph{``On page 2, the authors claim that ``publication bias is almost *perfectly* captured by selection models.'' I do not agree with this. This actually relates to the fundamental limitations of all models for publication bias (as well as p-hacking), because these models must make certain assumptions; if the publication bias in fact is not exactly induced by the assumed scenarios (e.g., following the selection functions w in this manuscript), the selection models may not perform well. Thus, I think it's better to treat selection models as a means of sensitivity analyses to evaluate the likelihood of the existence of publication bias (or p-hacking); see, e.g., \url{https://doi.org/10.1177/096228020000900503.}''}
+
+Obviously the selection models like that of Hedges (1992) captured very well the publication bias if the required assumptions are met. We edited the sentence at issue to limit our statement to p-values-related biases and supported it by mentioning the results of the comparative study of Carter et al (2019).
+
+
+
+
+\item \emph{``Another very popular class of selection models is proposed by Copas and his colleagues; the authors did not mention these selection models in the manuscript. See some examples at: \url{https://doi.org/10.1111/1467-985X.00123}; \url{https://doi.org/10.1093/biostatistics/1.3.247}; \url{https://doi.org/10.1177/096228020101000402}; \url{https://doi.org/10.1016/j.jclinepi.2008.12.002}; \url{https://doi.org/10.1016/j.jclinepi.2009.05.008}; \url{https://doi.org/10.1111/j.1467-9876.2012.01049.x}.''}
+
+We thank the Referee for pointing out this class of selection models. We chose to cite only one of the suggested papers due to space restrictions.
+
+
+
+\item \emph{``Through this article, the proposed methods (or more precisely, the assumed selection process) are based entirely on the p-values, but I think this is not always the case. Many other factors are also taken into account (by journal editors or authors) in the publication process, including the estimated values of treatment effects and the sample sizes. For example, if the sample size is really large, no matter how negative the results would be, I think the clinical trial can be always published. The assumptions may also not meet the contemporary trends in medical sciences. Most medical journals now require clinical trials to be pre-registered and many researchers are encouraged to publish the study protocols. Also, the scientific society has witnessed many helpful discussions or reminders about the proper use and interpretation of p-values. I am sure that most journal editors are fully aware of the interpretation of p-values. Many journals now have tried to discourage the reporting of p-values to indicate significance; see, e.g., \url{http://edmgr.ovid.com/epid/accounts/ifauth.htm}. Therefore, I think the concerns about p-hacking might not be that serious in recent years.''}.
+
+
+We agree with the Referee, and we clearly stated that in the section introducing the publication bias model (previously 2.2, now 2.3). We mentioned other possible sources of publication bias and wrote that our publication bias scenario focuses on p-value-based publication bias. This is our starting point. While we think that p-value-based publication bias is still a relevant problem (it is true that journals are starting discouraging reporting p-values for significance, but reporting p-values is still common practice, and anyway surely affected past studies that are likely to be considered in current/future meta-analyses), we removed the sentence ``Moreover, the $p$-value-based publication bias is more relevant to meta-analysis than the other sources of bias mentioned above.'' to avoid strong controversies and keep the focus on the models.
+
+
+
+\item \emph{``On page 3, when introducing the basic meta-analysis notation, the authors said that ``the theoretical discussion in this paper will not enforce normality [about the densities of study results] anywhere.'' Perhaps I did not fully understand the whole methodology, but I see the major theoretical results in Equations (3), (4), and (6) are all involved in normal densities \textbackslash phi.''}
+
+The Referee is right. Although our approach does not require normality, the paper only contains examples and propositions related to the Gaussian case. We edited the text, making clear that the results are presented for the Gaussian distribution, but they hold more generally.
+
+
+
+\item \emph{``Also, two minor suggestions in the 2nd paragraph on page 3. \textbackslash theta $\sim$ N(\textbackslash theta\_0, \textbackslash tau\^{}2), the variance should be \textbackslash tau\^{}2 in the normal distribution. In the next line, I understand that the authors try to generalize the proposed methodology framework, but I don't think it's proper to write the from f(x\_i; \textbackslash theta\_0, \textbackslash sqrt\{\textbackslash sigma\_i\^{}2 + \textbackslash tau\^{}2\}) for any type of density f. The normal distribution is somewhat unique as it depends only on the two parameters mean and variance, but it may not be true for other more general distributions. The margin variance may not be directly used to sufficiently describe the whole density; e.g., the t-distribution also depends on the degrees of freedom.''}
+
+
+We agree and changed the manuscript accordingly.
+
+
+
+\item \emph{``On page 4, ``the role of priors in the Bayesian approach here is to force the estimates away from highly implausible areas.'' Doesn't this also indicate the results might be sensitive to the choice of priors? Also, it seems I cannot find the exact priors in the main content used by the authors in the simulation and case studies.''}
+
+As every Bayesian method, the results may depend on the choice of the priors, especially in the case these are chosen unreasonably. We argued in Section 4.1 (now 3.1 due to the paper re-organization) in favor of our specific choice of priors: in order to make everything more clear and coherent, we also moved the discussion on the reasons to choose a Bayesian approach to this subsection.  Due to space limitations (we were required to reduce the paper of 2/3 pages), we could not report a sensitivity analysis, but, in our experience, reasonable choices for the priors lead to similar results.
+
+
+
+\item \emph{``In Equation (1), should w(u) be w(u\_i), that is, the p-value is calculated for each study i? For a one-sided testing, isn't the p-value calculated as \textbackslash Phi(\textbar x\_i\textbar/\textbackslash eta\_i) if we treat \textbackslash eta\_i as standard errors, and thus this p-value depends on the index i?''}
+
+
+The Referee is correct. We initially thought to drop all subscripts $i$ to make the presentation clearer, but it raised problems with the random effect/fixed effect separation and we forgot to restore the subscript to the $u$s. This mistake has been corrected throughout all the manuscript.
+
+
+
+\item \emph{``The selection model for publication bias considered in Section 2.2 seems to be very similar to those considered by Hedges. Is it correct to say that the major difference is about the assumption for w(u)? This manuscript requires w(u) to be a probability. However, I am a bit confused on this, because u is the p-value and is continuous, so isn't it straightforward to assume a probability density function for this continuous value, instead of the exact probability?''}
+
+
+Correct, indeed we state in the section introducing the publication bias model (previously 2.2, now 2.3) ``The kind of model sketched here is almost the same as the one of Hedges (1992), with the sole exception that Hedges (1992) does not require $w(u_i)$ to be a probability''. Unfortunately the Associate Editor asked to remove the further discussion about this point in order to, understandably, save space. Regarding the source of confusion, we hope that the corrected notations (following the Referee's comment above) including the subscript $i$ can clarify that $w(u_i)$ is a probability for each $u_i$.
+
+
+
+\item \emph{``On page 5, ``usually, the p-value will be approximately a one-sided normal p-value.'' However, to my experience, many articles in medical science actually report two-sided p-values (as well as two-sided equally-tailed CIs).''}
+
+
+We agree with the Referee's comment and this is the main reason for which, in contrast to Iyengar and Greenhouse (1988), we consider a cutoff at 0.025 in addition to 0.05 in our specific implementation. See also the paragraph below formula (3) at the beginning of page 7 and the response to the comment below.
+
+
+
+\item \emph{``On page 6 for the publication bias model (as well as on page 8 for the p-hacking model), the authors only focus on the cutoffs of significance levels 0.025 and 0.05, where 0.025 is due to the two-sided testing, while Hedges has suggested more cutoffs including 0.001, 0.005, 0.01, and 0.05. I feel that this is a step back from the existing selection models, and I am not convinced by the arguments provided by the authors. The significance level varies across different disciplines, and nowadays there are many debates on whether we should lower the significance level, e.g., to 0.005 (\url{https://doi.org/10.1038/s41562-017-0189-z}). Also, in Figure 2 of Chavalarias et al. (\url{http://dx.doi.org/10.1001/jama.2016.1952}), there is clear evidence that more p-values tend to mass at 0.001, 0.01, 0.02, 0.03, 0.04, and 0.05. To promote the proposed models to real data analyses, I think it's necessary for the authors to relax the assumption and permit the models to account for such mass effects at more levels.''}
+
+
+We respectfully disagree on the choice of the number of cut-offs. While we agree that in a few cases other values are considered, $0.05$ is widely used, more or less reasonably, as the ``significance threshold''. Note, however, that this is our personal preference and we presented all our methodological results in broad generality for an arbitrarily number $J$ of cut-offs. We agree with the Referee, indeed, that allowing for more cut-offs may make the method more attractive to more people. The R package related to this paper, \texttt{publipha} (Moss, 2020), already consider this option. We rewrote the part related to this issue (beginning of pages 7 and 9) to make these points clearer, stressing the freedom of choosing more cut-offs if desired.
+
+
+
+\item \emph{``On page 7, should it be \textbackslash phi\_\{[a,b)\} (x; \textbackslash theta, \textbackslash sigma), instead of \textbackslash phi\_\textbackslash alpha(x; \textbackslash theta, \textbackslash sigma), to indicate a normal truncated to [a, b)?''}
+
+
+Yes, true, we apologize for the typo.
+
+
+
+\item \emph{``At the beginning of Section 2.3, I hope that the authors could have more interpretations of Equation (5) when introducing the p-hacked density. I'm not sure if this equation is first proposed by the authors or by some existing papers? If it's the latter case, the authors should cite some proper references; if it's the first case, more detailed explanations are needed. This equation is a bit confusing to me. The density on the right side is integrated with respect to what variable? w or \textbackslash alpha? Why the integral rage is [0, 1]? If the integral is with respect to w, the w should be smaller than 1? That is, the authors need to guarantee that \textbackslash sum \textbackslash pi\_j $<=$ 1? This restriction is not shown in this manuscript.''}
+
+To the best of our knowledge, this is the first proposal of the formula in question. We added a sentence to try to explain better the formula, in particular the integral. We also specified that [0, 1] is the support of $\alpha$.
+
+
+
+\item \emph{``On page 8, I notice that the original density f* is written as f*(x\_i; \textbackslash theta\_i, \textbackslash eta\_i, u), depending on u following Equation (5). However, in the equation after ``the resulting density is'', there is one f* depending on u while another does not. Is the latter one calculated by integrating over u?''}
+
+
+It was a typo, we thank the Referee for having pointed it out.
+
+
+
+\item \emph{``Although the materials in Section 3 seem very important and useful, it?s hard to connect these materials with those in Section 2; they seem to be separate standalone parts. For example, how those densities f or f* in Section 2 are incorporated with the p or q functions in Section 3? I hope that the authors could consider some substantial revisions and present the connection in a clearer way.''}
+
+
+This concern was shared by the Associated Editor. We merged Section 2 and Section 3, splitting the latter into two parts, which now starts and concludes the former section, respectively. As part of this reorganization, we made an effort to better connect the material, accepting some loss of generality.
+
+
+
+\item \emph{``In the simulation results (Tables 1-3), the authors may also present the estimates from models without adjusting for publication bias or p-hacking.''}
+
+
+We added the required results, which provide further evidence for the usefulness of the proposed models.
+
+
+
+\item \emph{``The authors may re-organize the order of appendices in the supplementary materials. For example, Appendix C is first referred on page 7, but the earlier Appendices A and B are referred on page 8 later.''}
+
+
+Due to the general reorganization of the manuscript, the Web Appendix changed quite substantially. We thank anyway the Referee for making us notice this issue.
+
+
+\end{itemize}
+
+
+\end{document}

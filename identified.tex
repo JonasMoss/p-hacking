@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{arxiv}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{natbib}
+
+\makeatletter
+\theoremstyle{plain}
+\newtheorem{thm}{\protect\theoremname}
+\theoremstyle{plain}
+\newtheorem{prop}[thm]{\protect\propositionname}
+\ifx\proof\undefined
+\newenvironment{proof}[1][\protect\proofname]{\par
+	\normalfont\topsep6\p@\@plus6\p@\relax
+	\trivlist
+	\itemindent\parindent
+	\item[\hskip\labelsep\scshape #1]\ignorespaces
+}{%
+	\endtrivlist\@endpefalse
+}
+\providecommand{\proofname}{Proof}
+\fi
+
+\makeatother
+
+\usepackage{babel}
+\providecommand{\propositionname}{Proposition}
+\providecommand{\theoremname}{Theorem}
+
+\begin{document}
+
+\section{Identifiability of mixtures}
+Recall that a density $f(x;\theta)$ is identified if $f(x;\theta_{1})=f(x;\theta_{2})$
+for all $x$ implies that $\theta_{1}=\theta_{2}.$ Call a density
+$f(x;\theta)$ \textit{strongly identified} if $f(x;\theta_{1})/f(x;\theta_{2})$
+being constant for all $x$ in an open interval $I$ implies that
+$\theta_{1}=\theta_{2}$.
+\begin{prop}\label{prop:identified}
+Let $f(x;\theta)$ be a family of densities on $\mathbb{R}$, $-\infty=a_{1}<a_{2}<\ldots<a_{k+1}=\infty$
+a sequence of cutoffs, and $f_{[a_{i},a_{i+1}]}(x;\theta)$ the density
+$f$ truncated to $[a_{i},a_{i+1}]$. Let $\lambda_{i},k=1,\ldots k$
+be positive numbers satisfying $\sum_{i=1}^{k}\lambda_{i}=1$. Then
+the mixture
+\[
+g(x;\lambda,\theta)=\sum_{i=1}^{k}\lambda_{i}f_{[a_{i},a_{i+1})}(x;\theta)
+\]
+is identified in $(\lambda,\theta)$ if $f(x;\theta)$ is strongly
+identified in $\theta$.
+\end{prop}
+\begin{proof}
+Assume that $g(x;\lambda_{1},\theta_{1})=g(x;\lambda_{2},\theta_{2})$.
+Then $$\lambda_{1i}f_{[a_{i},a_{i+1}]}(x;\theta_{1})=\lambda_{2i}f_{[a_{i},a_{i+1}]}(x;\theta_{2})$$
+for all $i$, thus
+\[
+\frac{\lambda_{1i}}{\lambda_{2i}}=\frac{f_{[a_{i},a_{i+1})}(x;\theta_{1})}{f_{[a_{i},a_{i+1})}(x;\theta_{2})}.
+\]
+This implies that $f(x;\theta_{1})/f(x;\theta_{2})$ is constant for
+$x\in[a_{i},a_{i+1}]$. But since $f(x;\theta)$ is strongly identifiable,
+$\theta_{1}=\theta_{2}$, and, consequently, $\lambda_1 = \lambda_2$.
+\end{proof}
+If $f(x;\theta)$ is real analytic and nowhere zero, $f(x;\theta_{1})/f(x;\theta_{2})$
+is also real analytic and nowhere zero. By the Identity Theorem \citep[Corollary 1.2.6]{Krantz2002-bt}, if
+$f(x;\theta_{1})/f(x;\theta_{2})$ is constant on some interval $I$,
+then $f(x;\theta_{1})/f(x;\theta_{2})$ is constant everywhere, hence
+$f(x;\theta_{1})=f(x;\theta_{2})$ everywhere. Thus a family of real
+analytic nowhere zero densities is identified if and only if it is
+strongly identified. Every exponential family of densities on the form
+\[
+f(x;\theta)=h(x)\exp(\eta(\theta)^{T}T(x)-A(\theta))
+\]
+satisfies this property, provided only that $h$ is nowhere zero real analytic
+and $T$ is real analytic. In particular, the normal family satisfies
+the properties.
+
+Not every density is strongly identified. For instance, mixtures of uniforms are not strongly identified. And indeed, Proposition \ref{prop:identified} fails when $f$ is a mixture of uniforms.
+\bibliographystyle{biom}
+\bibliography{edited.bib}
+\end{document}
