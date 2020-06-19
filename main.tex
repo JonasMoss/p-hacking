@@ -236,7 +236,10 @@ q_{H}(x)=\frac{p(s=1\mid x)}{p(s=1\mid x_{H^{c}})}p(x)\label{eq:H-selection mode
 \end{equation}
 where $H^c$ is the complement of $H$. It is easy to verify that \eqref{eq:H-selection model} is a density corresponding to a rejection sampling model \citep{von1951various}.
 
-When $H$ contains every $x_i$, $q_H$ is the simplest kind of selection model, where every variable $x_i$ is resampled until $s=1$. When $H$ is empty, no variables can be resampled, and the model reduces to $p(x)$. But for non-empty $H$, $q_{H}(x)$ will often be equal to neither $p(x)$ nor $q_{H\cup H^c}(x)$, and different choices of selection sets $H\neq G$ will usually lead to different models $q_{H}(x)\neq q_{G}(x)$. 
+When $H$ contains every $x_i$, $q_H$ is the simplest kind of selection model, where every variable $x_i$ is resampled until $s=1$. When $H$ is empty, no variables can be resampled, and the model reduces to $p(x)$. But for non-empty $H$, $q_{H}(x)$ will often be equal to neither $p(x)$ nor $q_{H\cup H^c}(x)$, and different choices of selection sets $H\neq G$ will usually lead to different models $q_{H}(x)\neq q_{G}(x)$.
+
+
+
 % The foEquation \eqref{eq:H-selection model} we see that  
 % \begin{prop}
 % \label{prop:Equal selection models}Two selection models based on the same $p(x)$ and $s$ are equal, i.e. $q_{H}(x)=q_{G}(x)$, if and only if $p(s=1\mid x_{H^{c}})=p(s=1\mid x_{G^{c}})$.
@@ -282,29 +285,34 @@ When $H$ contains every $x_i$, $q_H$ is the simplest kind of selection model, wh
 % sampled together until $s=1$; {\bf (right)} the model $q_{x}$, where only $x$ is sampled until $s=1$.}
 % \end{figure}
 
-Let $f(x,\theta_i\mid\eta_i)=f(x\mid\theta_i,\eta)p(\theta_i)$
-be the joint density of a random effects meta-analysis, where $x_i$ is the effect size, $\theta_i$ is the study-specific parameter, and $\eta$ is a nuisance parameter such as the sample size of the study. 
+% Let $f(x,\theta_i\mid\eta_i)=f(x\mid\theta_i,\eta)p(\theta_i)$
+% be the joint density of a random effects meta-analysis, where $x_i$ is the effect size, $\theta_i$ is the study-specific parameter, and $\eta$ is a nuisance parameter such as the sample size of the study. 
 
 % The left plot of Figure \ref{fig:Plate notation, simple example} is a visualization of $f(x,\theta)$. If we have more than one study to analyse, we will have to work with product density $\prod_{i=1}^{n}f(x_{i},\theta_{i}\mid\eta_{i})$ instead of the stand-alone density $f(x,\theta\mid\eta)$. This is visualised in the middle plot of Figure \ref{fig:Plate notation, simple example}  by drawing a solid plate around the pair $(x,\theta)$. When we are dealing with a fixed effects meta-analysis, in which $\theta$ is fixed, the plate should be drawn around $x$ only (Figure \ref{fig:Plate notation, simple example}, right graph). 
 
 
-\subsection{Publication bias and \textit{p}-hacking models\label{subsec:Selection sets, meta analysis}}
+% \subsection{Publication bias and \textit{p}-hacking models\label{subsec:Selection sets, meta analysis}}
 
-To visualize selection models based on \textit{p}-values, we must make some modifications to the original graph:
+% To visualize selection models based on \textit{p}-values, we must make some modifications to the original graph:
 
-\begin{enumerate}[label=\roman*]
-\item Add the \textit{p}-value node $u$.
-\item Add an arrow from $x$ to $u$. 
-\item Since the \textit{p}-value $u$ usually depends on more information than just $x$, such as the standard deviation of $x$, add an arrow from $\eta$ (which represents the extra information) to $u$ as well.
-\item Add the selection node $s$ and an arrow from $u$ to $s$. If $u$ is the only parent of $s$, we are dealing with selection models only based on
-\textit{p}-values. 
-\end{enumerate}
+% \begin{enumerate}[label=\roman*]
+% \item Add the \textit{p}-value node $u$.
+% \item Add an arrow from $x$ to $u$. 
+% \item Since the \textit{p}-value $u$ usually depends on more information than just $x$, such as the standard deviation of $x$, add an arrow from $\eta$ (which represents the extra information) to $u$ as well.
+% \item Add the selection node $s$ and an arrow from $u$ to $s$. If $u$ is the only parent of $s$, we are dealing with selection models only based on
+% \textit{p}-values. 
+% \end{enumerate}
 
-The placement of dashed and solid plates depends on which model we want to use.
+% The placement of dashed and solid plates depends on which model we want to use.
 
-The idea behind the publication bias model is that a completely new study is done whenever the last one failed to be published. This implies that $\theta$ and $x$ are sampled together. The left plot of Figure \ref{fig:Plate notation, publication bias and p-hacking} shows the direct acyclic graph of the normal publication bias model defined in Proposition \ref{prop:One-sided normal discrete probability vector publication bias model-1}. In this particular case, $\eta$ corresponds to $\sigma$, the standard deviation. Moreover, $u$ is a \textit{p}-value, $\theta_{0}$ is the mean of the effect size distribution, $\tau$ is the standard deviation of the effect size distribution, and $\rho$ is the selection probability function. The variable $Z$ lives on the unit interval, and encodes the editor's decision to publish: If the observed \textit{p}-value is less than $Z$, the study is published. Importantly, $Z$ is placed inside the selection set because a new \textit{p}-value cut-off decision is made for each study received. Since $x$ and $\theta$ are sampled together, the selection mechanism modifies $p(\theta)$.%, as can be seen in the example \ref{exa:Publication bias, theta distribution} here below.
+The idea behind the publication bias model is that a completely new study is done whenever the last one failed to be published. That is, both $\theta_i$ and $x_i$ are resampled when $x_i$ fails to be published. On the other hand, in the \textit{p}-hacking scenario, the \textit{p}-hacker will hack his study all the way to significance, regardless of $\theta_i$. This means that only $x$  is resampled, and, consequently, $\theta$ must be placed outside the selection set. 
 
-In the \textit{p}-hacking scenario, the \textit{p}-hacker will hack his study all the way to significance, regardless of $\theta$. This means that $\theta$ and $x$ are sampled separately and $\theta$ must be placed outside the selection set. Moreover, the decision of how much to \textit{p}-hack is not reevaluated at each attempt. Consequently, the random variable that controls the \textit{p}-hacking decisions, analogously to the publication bias model, $Z$, is also placed outside the selection graph. This is the case, for example, of an author who decides to \textit{p}-hack to level $\alpha$ ($Z = \alpha$): he acts on $x$ to obtain the desired \textit{p}-value, whatever the sampled $\theta$ is. The graphical representation of this model is shown in the right plot of Figure \ref{fig:Plate notation, publication bias and p-hacking}. Since $x$ and $\theta$ are not sampled together, the selection mechanism does not modify $p(\theta)$.
+
+The left plot of Figure \ref{fig:Plate notation, publication bias and p-hacking} shows the direct acyclic graph of the normal publication bias model defined in Proposition \ref{prop:One-sided normal discrete probability vector publication bias model-1}. In this case, $\eta$ corresponds to $\sigma$, the standard deviation. Moreover, $u$ is a \textit{p}-value, $\theta_{0}$ is the mean of the effect size distribution, $\tau$ is the standard deviation of the effect size distribution, and $\rho$ is the selection probability function. The variable $Z$ lives on the unit interval, and encodes the editor's decision to publish: If the observed \textit{p}-value is less than $Z$, the study is published. Importantly, $Z$ is placed inside the selection set because a new \textit{p}-value cut-off decision is made for each study received. Since $x$ and $\theta$ are sampled together, the selection mechanism modifies $p(\theta)$.%, as can be seen in the example \ref{exa:Publication bias, theta distribution} here below.
+
+
+
+Consequently, the random variable that controls the \textit{p}-hacking decisions, analogously to the publication bias model, $Z$, is also placed outside the selection graph. This is the case, for example, of an author who decides to \textit{p}-hack to level $\alpha$ ($Z = \alpha$): he acts on $x$ to obtain the desired \textit{p}-value, whatever the sampled $\theta$ is. The graphical representation of this model is shown in the right plot of Figure \ref{fig:Plate notation, publication bias and p-hacking}. Since $x$ and $\theta$ are not sampled together, the selection mechanism does not modify $p(\theta)$.
 
 \begin{figure}
 \begin{center}     

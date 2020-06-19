@@ -1,2 +1,3 @@
 * Fix "differences between the models".
 * Fix introduction to the selection models.
+* Check "modified" and "transformed"; use the same word.
