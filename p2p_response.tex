@@ -21,7 +21,7 @@ by J.\ Moss and R.\ De Bin}
 
 \vspace{0.5cm}
 
-\noindent We thank you for the opportunity to revise our paper. We attach a copy of the new  version of the paper together with a commentary on the specific points raised by the Associate Editor and the Referee. As requested, we reduced the manuscript by 2.5 pages.
+\noindent We thank you for the opportunity to revise our paper. We attach a copy of the new  version of the paper together with a commentary on the specific points raised by the Associate Editor and the Referee. As requested, we reduced the manuscript by 3 pages.
 
 
 \vspace{0.3cm}
@@ -71,22 +71,22 @@ $$
 where $u(x_i, \eta_i)$ denotes p-value of a study. The actual observed data are the result of the selection. Specifying the type of selection functions for obtaining formula (5) and demonstrating the relationship to the mixture model formation will also help. It may also be better to discuss the normal modeling framework first and then mention how the framework can be extended to more general distributional forms.''}
 
 
-This is a good suggestion that we were happy to follow. The first part of Section 3, introducing the selection models, has now been moved to the beginning of Section 2, into a new subsection 2.2. The rest of Section 3 has been appended to the same section (Section 2), into a new subsection 2.5.
+This is a great suggestion that we were happy to follow. The first part of Section 3, introducing the selection model, has now been moved to the beginning of Section 2, into a new subsection 2.2. The rest of Section 3 has been appended to the same section (Section 2), into a new subsection 2.5.
 
-As suggested by the Associate Editor, we also used the selection probability to introduce $w(u_i)$ and added a sentence on the selection set for a selection model representation of the $p$-hacking model. Due to space reasons, we kept the description of the relationship between its selection model and mixture model representation in the Web Appendix.
+As suggested by the Associate Editor, we also used the selection probability to introduce $w(u_i)$ and added a sentence on the selection set for a selection model representation of the $p$-hacking model. We think that the new version of the comparison between the models also helps on this regard.
 
 
 
 \item \emph{``It is not clear how important the graphical representation of the selection and mixture models is in the second part of Section 3.''}
 
 
-We think that the graphical representations can be very helpful to understand the difference between the two models. Nonetheless, we are aware of the space limitations and we moved the graphical representations to the Web Appendix.
+The graphical representations could have been very helpful to understand the difference between the two models based on the concept of selection set. Following the re-organization of the sections, in line with other comments of the Associate Editor and the Reviewer, we dropped the concepts of ``selection set'' and removed the related graphical representations.
 
 
 \item \emph{`` The paper can be made substantially short by removing unimportant and sometimes misleading statements. For example, the discussion in the third paragraph on page 5 seems mostly minor or irrelevant to the problem. I had a hard time to understand the statement such as ``every variable is sampled until $s = 1$'' which appears in many places in section 3. Do you mean changing (or hacking?) such variables?''}
 
 
-We shortened the manuscript of 2/3 pages, as explicitly asked by the Editor. In the new version, all the sentences like ``every variable is sampled until $s = 1$'' have been removed and the concept related to the selection, instead.
+We shortened the manuscript of 3 pages, as explicitly asked by the Editor. In the new version, all the sentences like ``every variable is sampled until $s = 1$'' have been removed and the concept related to the selection, instead.
 
 
 
@@ -96,10 +96,10 @@ We added a sentence in the discussion reporting this issue, in the part related 
 
 \item \emph{``The successful correction of the public bias and the p-value hacking appears to depend on the specific parametric model used. More discussion on the identifiability of the model needs to be included, especially when normal models are not assumed.''}
 
-Due to space constraints, we could not address this issue on the main text, so we provided a proof of the model identifiability in a novel Web Appendix (Web Appendix D). A reference to it has been added at the end of (what is now) Section 3.
+Due to space constraints, we could not address in details this issue on the main text, so we provided a proof of the model identifiability in a novel Web Appendix (Web Appendix A), while a brief comments, together with a reference to the aforementioned Web Appendix) has been added to the discussion.
 \end{enumerate}
 
-\vspace{3cm}
+\vspace{2cm}
 
 \begin{center}
 REFEREE
@@ -154,7 +154,7 @@ As every Bayesian method, the results may depend on the choice of the priors, es
 \item \emph{``In Equation (1), should w(u) be w(u\_i), that is, the p-value is calculated for each study i? For a one-sided testing, isn't the p-value calculated as \textbackslash Phi(\textbar x\_i\textbar/\textbackslash eta\_i) if we treat \textbackslash eta\_i as standard errors, and thus this p-value depends on the index i?''}
 
 
-The Referee is correct. We initially thought to drop all subscripts $i$ to make the presentation clearer, but it raised problems with the random effect/fixed effect separation and we forgot to restore the subscript to the $u$s. This mistake has been corrected throughout all the manuscript.
+The Referee is correct. We initially thought to drop all subscripts $i$ to make the presentation clearer, but it raised problems with the random effect/fixed effect separation and we forgot to restore the subscript to the $u\;$s. This mistake has been corrected throughout all the manuscript.
 
 
 
@@ -175,7 +175,7 @@ We agree with the Referee's comment and this is the main reason for which, in co
 \item \emph{``On page 6 for the publication bias model (as well as on page 8 for the p-hacking model), the authors only focus on the cutoffs of significance levels 0.025 and 0.05, where 0.025 is due to the two-sided testing, while Hedges has suggested more cutoffs including 0.001, 0.005, 0.01, and 0.05. I feel that this is a step back from the existing selection models, and I am not convinced by the arguments provided by the authors. The significance level varies across different disciplines, and nowadays there are many debates on whether we should lower the significance level, e.g., to 0.005 (\url{https://doi.org/10.1038/s41562-017-0189-z}). Also, in Figure 2 of Chavalarias et al. (\url{http://dx.doi.org/10.1001/jama.2016.1952}), there is clear evidence that more p-values tend to mass at 0.001, 0.01, 0.02, 0.03, 0.04, and 0.05. To promote the proposed models to real data analyses, I think it's necessary for the authors to relax the assumption and permit the models to account for such mass effects at more levels.''}
 
 
-We respectfully disagree on the choice of the number of cut-offs. While we agree that in a few cases other values are considered, $0.05$ is widely used, more or less reasonably, as the ``significance threshold''. Note, however, that this is our personal preference and we presented all our methodological results in broad generality for an arbitrarily number $J$ of cut-offs. We agree with the Referee, indeed, that allowing for more cut-offs may make the method more attractive to more people. The R package related to this paper, \texttt{publipha} (Moss, 2020), already consider this option. We rewrote the part related to this issue (beginning of pages 7 and 9) to make these points clearer, stressing the freedom of choosing more cut-offs if desired.
+We respectfully disagree on the choice of the number of cut-offs. While we agree that in a few cases other values are considered, $0.05$ is widely used, more or less reasonably, as the ``significance threshold''. Note, however, that this is our personal preference and we presented all our methodological results in broad generality for an arbitrarily number $J$ of cut-offs. We agree with the Referee, indeed, that allowing for more cut-offs may make the method more attractive to more people. The R package related to this paper, \texttt{publipha} (Moss, 2020), already consider this option. We rewrote the part related to this issue (at the end of pages 6 and 8) to make these points clearer, stressing the freedom of choosing more cut-offs if desired.
 
 
 
@@ -188,7 +188,7 @@ Yes, true, we apologize for the typo.
 
 \item \emph{``At the beginning of Section 2.3, I hope that the authors could have more interpretations of Equation (5) when introducing the p-hacked density. I'm not sure if this equation is first proposed by the authors or by some existing papers? If it's the latter case, the authors should cite some proper references; if it's the first case, more detailed explanations are needed. This equation is a bit confusing to me. The density on the right side is integrated with respect to what variable? w or \textbackslash alpha? Why the integral rage is [0, 1]? If the integral is with respect to w, the w should be smaller than 1? That is, the authors need to guarantee that \textbackslash sum \textbackslash pi\_j $<=$ 1? This restriction is not shown in this manuscript.''}
 
-To the best of our knowledge, this is the first proposal of the formula in question. We added a sentence to try to explain better the formula, in particular the integral. We also specified that [0, 1] is the support of $\alpha$.
+To the best of our knowledge, this is the first proposal of the formula in question. We re-wrote the integral to explicitly show all the involved quantities and added a sentence to try to explain better the formula. We also specified that [0, 1] is the support of $\alpha$.
 
 
 
@@ -199,10 +199,10 @@ It was a typo, we thank the Referee for having pointed it out.
 
 
 
-\item \emph{``Although the materials in Section 3 seem very important and useful, it?s hard to connect these materials with those in Section 2; they seem to be separate standalone parts. For example, how those densities f or f* in Section 2 are incorporated with the p or q functions in Section 3? I hope that the authors could consider some substantial revisions and present the connection in a clearer way.''}
+\item \emph{``Although the materials in Section 3 seem very important and useful, it's hard to connect these materials with those in Section 2; they seem to be separate standalone parts. For example, how those densities f or f* in Section 2 are incorporated with the p or q functions in Section 3? I hope that the authors could consider some substantial revisions and present the connection in a clearer way.''}
 
 
-This concern was shared by the Associated Editor. We merged Section 2 and Section 3, splitting the latter into two parts, which now starts and concludes the former section, respectively. As part of this reorganization, we made an effort to better connect the material, accepting some loss of generality.
+This concern was shared by the Associated Editor. We merged Section 2 and Section 3, splitting the latter into two parts, which now starts and concludes the former section, respectively. As part of this reorganization, we removed the parts which may have caused confusion and made an effort to better connect the material, accepting some loss of generality.
 
 
 
@@ -216,7 +216,7 @@ We added the required results, which provide further evidence for the usefulness
 \item \emph{``The authors may re-organize the order of appendices in the supplementary materials. For example, Appendix C is first referred on page 7, but the earlier Appendices A and B are referred on page 8 later.''}
 
 
-Due to the general reorganization of the manuscript, the Web Appendix changed quite substantially. We thank anyway the Referee for making us notice this issue.
+Due to the general reorganization of the manuscript, the Web Appendix changed quite substantially. We thank anyway the Referee for making us notice this issue. Now the Web Appendices are named based on the order of their reference in the text.
 
 
 \end{itemize}
