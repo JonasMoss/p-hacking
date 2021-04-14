@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+\usepackage{color, url}
+
+ %\raggedbottom
+\tolerance=10000 \marginparwidth 0pt \oddsidemargin 0pt
+\evensidemargin 0pt \marginparsep 0pt \marginparwidth 2in
+\textwidth 6.0in
+\textheight 8.5in
+\topmargin 0pt
+
+\begin{document}
+
+{\bf
+\noindent Manuscript ID: BIOM2020126M.R1  \\
+Title: Modelling publication bias and p-hacking \\
+by J.\ Moss and R.\ De Bin}
+
+
+\vglue .5in \noindent Dear Editor,
+
+
+\vspace{0.5cm}
+
+\noindent We thank you for the renewed opportunity to revise our paper. We attach a copy of the new  version of the paper together with a commentary on the points for which the Associate Editor and the Referee asked more clarification or added in the second review.
+
+
+\vspace{0.3cm}
+
+\noindent We look forward to hearing from you.% soon.
+
+\vglue .2in \noindent With best regards,
+
+\vglue .5in
+\noindent 
+Jonas Moss\\
+Riccardo De Bin \\
+
+\pagestyle{empty}
+\newpage
+
+
+
+\parindent=0pt
+%\baselineskip=2.0\normalbaselineskip
+\parskip=4pt plus 1.5pt minus 1pt
+
+
+{\bf COMMENTARY} \\
+
+We are grateful for the further comments of the Associate Editor and the Referee which led to an improved version of our paper. We hope to have clarified all remaining issues and that this new version is acceptable for publication in Biometrics.
+
+\vspace{2cm}
+
+\begin{center}
+ASSOCIATE EDITOR
+\end{center}
+
+\begin{enumerate}
+
+\item \emph{``The connection of selection bias and p-hacking to the selection model or the mixture model has not been clearly explained. I think this is partly due to the use of implicit relationship between $u$ and $x$, $\alpha$ and $w(\alpha)$, and to the less extend $u$ and $\alpha$. It is important to at least to use an example to illustrate how they are related to each other. It is better if a clearly defined relationship is spelled out.''}
+
+Add a few sentences.\\
+
+
+\item \emph{``In contrast to the previous comment, another issue is that some simple ideas and facts were verbosely explained. The authors need to remove such repetitions throughout the paper and keep exposition concise. As an example, lines 7-10 on page 3, ``This paper\dots bias and p-hacking'' maybe simplified as ``This paper aims to recover the true data-generation model $f^*(x_i \mid \theta_i , \eta_i)$ that has been transformed by the publication bias and p-hacking.'' Or ``This paper corrects the bias due to the transformation of the true data-generation model $f^*(x_i \mid \theta_i , \eta_i )$ by the publication bias and p-hacking.'' ''}
+
+Rephrase.\\
+
+\item \emph{``A few technical issues:
+\begin{itemize}
+\item Please consider providing a simple derivation leading to Proposition 1 in the main body
+of the article to remove ambiguity around the result.
+\end{itemize}
+}
+
+Uncomment in the Appendix.
+
+\emph{\begin{itemize}
+\item Line -3 on Page 3, write $f(x_i \mid \theta_0, \sigma_i^2 + \tau_2)$ either as $f(x_i \mid \theta_0, \sigma_i^2, \tau^2)$ if you want to keep it general or as $N(\theta_0, \sigma_i^2 + \tau^2 )$ if you want to make it specific.
+\end{itemize}
+}
+
+Correct
+
+\emph{\begin{itemize}
+\item Line 11 on page 4, change the expression to $p(s = 1 \mid x_i)f^*(x_i)/p(s = 1)$ to avoid
+misinterpretation.
+\end{itemize}
+}
+
+Correct
+
+\emph{\begin{itemize}
+\item Line -9 on page 5, write down the integral explicitly to avoid ambiguity.
+\end{itemize}
+}
+
+Where? Find and correct.
+
+\emph{\begin{itemize}
+\item In equation (3), should $\Phi^{-1}(1 - \alpha_j)$ be $\sigma_i \Phi^{-1}(1 - \alpha_j)$? Same question in other places.
+\end{itemize}
+}
+
+Check and possibly correct.
+
+\emph{\begin{itemize}
+\item Lines -5 and -4 on page 7, explicitly express $f^*(x_i \mid \theta_i, \eta_i, u_i)$ in terms of $f^*(x_i \theta_i, \eta_i)$ and $u_i$, and $f_\alpha^*(x_i \mid \theta_i, \eta_i, u_i)$ in terms of $f^*(x_i \theta_i, \eta_i)$, $u_i$, and $\alpha$. What is $w(\alpha \mid u_i, \eta_i)$? You may explain using an example.
+\end{itemize}
+}
+
+Modify
+
+\emph{\begin{itemize}
+\item In Appendix B, how is $u$ related to $x_i$?''
+\end{itemize}
+}
+
+Clarify.
+
+\end{enumerate}
+
+\vspace{2cm}
+
+\begin{center}
+REFEREE
+\end{center}
+
+\begin{itemize}
+\item \emph{``Page 4, the citation “Hedges (1992)” should be in parentheses.''}
+
+Correct\\
+
+\item \emph{``Page 4. As in my previous comments, I still feel that the authors should just focus on the case of normal densities, because the majority of the results are based on the normality assumption, and no examples or case studies are given for non-normal cases. Although the authors tried to generalize the methodology, this could lead to some problems, and its usefulness is unclear in practice.}
+
+\emph{Specifically, ``The results of this paper will be presented for normal densities, but they hold for any distribution that satisfies mild conditions (see Section 5 and Web Appendix A).'' If the authors insist to include non-normal cases, these mild conditions should be explicitly listed; I didn't find these conditions in Section 5 and Web Appendix A. Also, at least some worked examples should be presented (if the main content is running out of space, the results could be presented in the Supplementary Materials). Can the R package ``publipha'' developed by the authors deal with non-normal cases? From a practical perspective, many real-world meta-analyses have binary outcomes (e.g., those estimating odds ratios); can the f() be probability mass functions (e.g., binomial)? I do hope that these assumptions should be driven from practical problems, instead of just adding statistical complexity.''}
+
+To do\\
+
+\item \emph{``Again, although the authors responded that it has been changed, I still find f(x\_i $\mid$ \textbackslash theta\_0, \textbackslash sigma\_i\^{}2 + \textbackslash tau\^{}2) incorrect (the 3rd line from the bottom on page 4). This notation for the marginal distribution is based on the conception of normal densities, and is not true for general cases. Simply suppose that f() is a t-distribution (with relatively large degrees of freedom, so that it should be close to, but not exactly equal to, normal, and should satisfy the “mild conditions” mentioned by the authors). As the random effects are assumed to be normal, \textbackslash theta\_i \textbackslash\ sim N(\textbackslash theta\_0, \textbackslash tau\^{}2), the marginal distribution is the integral of the normal and t densities, which is clearly not in the t family, so that it should not be denoted by f(x\_i $\mid$ \textbackslash theta\_0, \textbackslash sigma\_i\^{}2 + \textbackslash tau\^{}2).''}
+
+Correct.\\
+
+
+\item \emph{``Page 12, I still think sensitivity analyses are strongly needed, which could be presented in the Supplementary Materials due to space limit in the main content. (To save space, the authors could remove the ``[Table x / Figure x about here]''.) The priors should be more explicitly specified. Specifically, ``We use standard normal priors for \textbackslash theta\_0, a standard half normal prior for \textbackslash tau, and, in the p-hacking model, a uniform Dirichlet prior for \textbackslash pi.'' Give the hyper-parameters of the priors. The heterogeneity parameter \textbackslash tau is critical in Bayesian meta-analysis, and many studies have shown that it could substantially impact the meta-results (e.g., \url{https://doi.org/10.1093/ije/dys041}). Besides the half-normal prior, many people also use uniform prior for \textbackslash tau and inverse gamma for \textbackslash tau\^{}2. Because of the nature of the selection models, it is usually hard for practitioners to intuitively interpret the underlying parameters and thus specify informative priors based on their experience. Therefore, non- or weakly-informative priors are the only choices in many cases, and it is important to check the impact of these priors to see if they are really ``weakly-informative''.''}.
+
+To do\\
+
+
+\item \emph{``Page 12, I just notice that the simulation studies were based on only 100 replicates. I was wondering if the proposed model is time-consuming for implementation? Given that the number of replicates was relatively small, the authors should report the Monte Carlo standard errors (or their maximum values across simulation settings) for the results in the corresponding tables. For example, in Table 1, it is unclear to me whether a difference of 0.06 in the estimate of \textbackslash theta was truly due to p-hacking or publication bias, or it was just due to Monte Carlo errors.''}
+
+To do\\
+
+
+\item \emph{``Throughout Web Appendix A, should “identified” be “identifiable”?''}
+
+Change\\
+
+
+\item \emph{``For consistency with the main content, in proportion A in Web Appendix A, should ``[a\_i, a\_\{i+1\}]'' and ``[a\_i, a\_\{i+1\})'' in the subscript of the density f() be ``(a\_i, a\_{i+1}]''?''}
+
+Check and possibly change.
+
+\end{itemize}
+
+\end{document}
