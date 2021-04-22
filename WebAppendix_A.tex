@@ -1,0 +1,41 @@
+%% LyX 2.3.6.1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[oneside,english]{amsart}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{amsthm}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+\begin{proof}[(Rest of the) proof of Proposition 1]
+For the random effects model, let us start from
+\[
+f(x_{i}\mid\theta_{0},\tau,\sigma_{i})\propto\sum_{j=1}^{J}\rho_{j}\int1_{[\alpha_{j-1},\alpha_{j})}(u_{i})\phi(x_{i}\mid\theta_{i},\sigma_{i})\phi(\theta_{i}\mid\theta_{0},\tau)d\theta_{i}.
+\]
+To calculate the normalizing constant, substitute $1_{[\alpha_{j-1},\alpha_{j})}(u_{i})=1_{[\sigma_{i}c_{j-1},\sigma_{i}c_{j})}(x_{i})$
+first. This is done since the \emph{p}-value is calculated with respect
+to $\sigma_{i}$, not the unknown $\sqrt{\tau^{2}+\sigma_{i}^{2}}$.
+Then the normalizing constant is
+\begin{eqnarray*}
+\sum_{j=1}^{J}\rho_{j}\int1_{[\sigma_{i}c_{j-1},\sigma_{i}c_{j})}(x_{i})\phi(x_{i}\mid\theta_{i},\sigma_{i})\phi(\theta_{i}\mid\theta_{0},\tau)d\theta_{i}dx_{i} & =\\
+\sum_{j=1}^{J}\rho_{j}\int1_{[\sigma_{i}c_{j-1},\sigma_{i}c_{j})}(x_{i})\phi(x_{i}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})dx_{i} & =\\
+\sum_{j=1}^{J}\rho_{j}\left[\Phi(\sigma_{i}c_{j-1}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})-\Phi(\sigma_{i}c_{j}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})\right]
+\end{eqnarray*}
+Use that,
+\[
+\frac{\phi(x_{i}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})1_{[\alpha_{j-1},\alpha_{j})}(u_{i})}{\Phi(\sigma_{i}c_{j-1}\mid\theta,\sqrt{\tau^{2}+\sigma_{i}^{2}})-\Phi(\sigma_{i}c_{j}\mid\theta,\sqrt{\tau^{2}+\sigma_{i}^{2}})}=\phi_{[\sigma_{i}c_{j},\sigma_{i}c_{j-1})}(x_{i}\mid\theta,\sqrt{\tau^{2}+\sigma_{i}^{2}}),
+\]
+and we are done.
+%\[
+%\sum_{j=1}^{J}\rho_{j}\left[\Phi(c_{j-1}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})-\Phi(c_{j}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})\right].
+%\]
+\end{proof}
+
+\end{document}
