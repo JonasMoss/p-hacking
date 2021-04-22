@@ -1,13 +1,19 @@
-\documentclass[english]{article}
+\documentclass[oneside,english]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{csquotes, caption}
 \usepackage[colorlinks=true, citecolor = blue]{hyperref}      % hyperlinks
-\usepackage{multirow, amssymb, amsmath, graphicx, arydshln, url}
+\usepackage{multirow, amssymb, amsmath, graphicx, arydshln, url, amsthm}
 \usepackage[T1]{fontenc}
 \usepackage{natbib}
+\usepackage{babel}
 
-\title{Supporting Information for ``Modelling publication bias and \textit{p}-hacking''\\ by Jonas Moss and Riccardo De Bin}
+\makeatletter
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\makeatother
+
+\title{Supporting Information for ``Modelling publication bias and \textit{p}-hacking'' \\ by Jonas Moss and Riccardo De Bin}
 
 \author{}
 
@@ -24,6 +30,6 @@
 
 
 \bibliographystyle{biom}
-\bibliography{main.bib}
+\bibliography{edited.bib}
 
 \end{document}
