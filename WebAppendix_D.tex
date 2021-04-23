@@ -1,47 +1,7 @@
 \section*{Web Appendix D}
 
-Recall that a density $f(x;\theta)$ is identifiable if $f(x;\theta_{1})=f(x;\theta_{2})$
-for all $x$ implies that $\theta_{1}=\theta_{2}.$ Call a density
-$f(x;\theta)$ \textit{strongly identifiable} if $f(x;\theta_{1})/f(x;\theta_{2})$
-being constant for all $x$ in an open interval $I$ implies that
-$\theta_{1}=\theta_{2}$.
-\paragraph{Proposition A.}\label{prop:identifiable}
+The publication bias and the \textit{p}-hacking models have been defined as a selection model and a mixture model, respectively. To appreciate the difference between the models, and relate the selection biases to them, consider the following example. We want to perform a meta-analysis based on 10 studies, for simplicity with fixed effects, so that $\theta_i = \theta$ for all $i$. In the ideal situation with no publication bias and no \textit{p}-hacking, 10 researchers perform their studies fairly, observe an effect size from its distribution $\phi(x_{i}\mid\theta,\sigma^2_{i})$ and publish the result. To perform our meta-analysis, we do not need much more than to estimate $\theta$ by using $\phi(x_{i}\mid\theta,\sigma^2_{i})$.
 
-Let $f(x;\theta)$ be a family of densities on $\mathbb{R}$, $-\infty=a_{1}<a_{2}<\ldots<a_{k+1}=\infty$
-a sequence of cutoffs, and $f_{[a_{i},a_{i+1})}(x;\theta)$ the density
-$f$ truncated to $[a_{i},a_{i+1})$. Let $\lambda_{i},k=1,\ldots k$
-be positive numbers satisfying $\sum_{i=1}^{k}\lambda_{i}=1$. Then
-the mixture
-\[
-g(x;\lambda,\theta)=\sum_{i=1}^{k}\lambda_{i}f_{[a_{i},a_{i+1})}(x;\theta)
-\]
-is identifiable in $(\lambda,\theta)$ if $f(x;\theta)$ is strongly
-identifiable in $\theta$.
+In a publication bias scenario, some of these 10 studies may not be published because their \textit{p}-values $u_i$ are too large. Let us say that the first 3 have a \textit{p}-value smaller than $0.025$ (group A), the following 4 between $0.025$ and $0.05$ (group B), and the remaining 3 larger than $0.05$ (group C). With an editor publishing all studies ($\rho_{1} = 1$) with $u_i < 0.025$, half ($\rho_{2} = 0.5$) of those with $0.025 \leq u_i < 0.05$ and one-third ($\rho_{3} = 0.33$) when $u_i \geq 0.05$, we would expect to see all 3 studies in group A, 2 of Group B and only one of group $C$. It is clear that the density is not anymore the original $\phi(x_{i}\mid\theta,\sigma^2_{i})$, but a transformed one $f(x_{i}\mid\theta,\sigma^2_{i})$ for which some values of $\theta$ are underrepresented by the effect of a selection mechanism. In this case, by the selection probability function $w(u_i) = 1_{[0,0.025)}(u_i) + 0.5 \cdot 1_{[0.25,0.05)}(u_i) + 0.33 \cdot 1_{[0.05, 1]}(u_i)$. In practice we do not know $\rho_{1}$, $\rho_{2}$ and $\rho_{3}$, and we need to estimate them in our model. In the ideal situation, they are all equal to 1, that means no selection bias, so $f(x_{i}\mid\theta_{i},\sigma^2_{i}) = \phi(x_{i}\mid\theta,\sigma^2_{i})$.
 
-\paragraph{Proof.}
-Assume that $g(x;\lambda_{1},\theta_{1})=g(x;\lambda_{2},\theta_{2})$.
-Then $$\lambda_{1i}f_{[a_{i},a_{i+1})}(x;\theta_{1})=\lambda_{2i}f_{[a_{i},a_{i+1})}(x;\theta_{2})$$
-for all $i$, thus
-\[
-\frac{\lambda_{1i}}{\lambda_{2i}}=\frac{f_{[a_{i},a_{i+1})}(x;\theta_{1})}{f_{[a_{i},a_{i+1})}(x;\theta_{2})}.
-\]
-This implies that $f(x;\theta_{1})/f(x;\theta_{2})$ is constant for
-$x\in[a_{i},a_{i+1})$. But since $f(x;\theta)$ is strongly identifiable,
-$\theta_{1}=\theta_{2}$, and, consequently, $\lambda_1 = \lambda_2$.
-
-
-If $f(x;\theta)$ is real analytic and nowhere zero, $f(x;\theta_{1})/f(x;\theta_{2})$
-is also real analytic and nowhere zero. By the Identity Theorem \citep[Corollary 1.2.6]{Krantz2002-bt}, if the ratio
-$f(x;\theta_{1})/f(x;\theta_{2})$ is constant on some interval $I$,
-then $f(x;\theta_{1})/f(x;\theta_{2})$ is constant everywhere, hence
-$f(x;\theta_{1})=f(x;\theta_{2})$ everywhere. Thus a family of real
-analytic nowhere zero densities is identifiable if and only if it is
-strongly identifiable. Every exponential family of densities on the form
-\[
-f(x;\theta)=h(x)\exp(\eta(\theta)^{T}T(x)-A(\theta))
-\]
-satisfies this property, provided only that $h$ is nowhere zero real analytic
-and $T$ is real analytic. In particular, the normal family satisfies
-the properties.
-
-Not every density is strongly identifiable. For instance, mixtures of uniforms are not strongly identifiable. And indeed, Proposition A fails when $f$ is a mixture of uniforms.
+In the \textit{p}-hacking scenario, instead, we observe all our 10 studies, but not with their original effect size, because they have been modified in order to reach a specific significance value $\alpha$. In mathematical terms, $x_i$ does not come from the original Gaussian $\phi(x_{i}\mid\theta,\sigma^2_{i})$ but from a truncated Gaussian $\phi_\alpha^{\star}(x_{i}\mid\theta,\sigma^2_{i})$, where the truncation excludes the possibility to get an $u_i$ larger than $\alpha$. If every researchers decided to $p$-hack all studies at the same level, let us say $\alpha = 0.05$, we could make inference on $\theta$ using $\phi_{0.05}^{\star}(x_{i}\mid\theta,\sigma^2_{i})$. But researchers may choose to $p$-hack at a different $\alpha$, for example at $\alpha_1 = 0.025$ with probability $\pi_1=  0.1$, at $\alpha_2 = 0.05$ with probability $\pi_2 = 0.7$ and no-hack ($\alpha_3 = 1$) with probability $\pi_3 = 0.2$. So the density from which our 10 studies will be in this case a mixture of the three truncated Gaussian, with mixing distribution $\omega(\alpha) = 0.2 \cdot 1(\alpha = 0.025) + 0.7 \cdot 1(\alpha = 0.05) + 0.2 \cdot 1(\alpha = 1)$. Also in this case we cannot know the probabilities $\pi_1$, $\pi_2$ and $\pi_3$ in advance and we need to estimate them from the data. Here the ideal situation, no $p$-hacking, is $\pi_1 = \pi_2 = 0$ and $\pi_3 = 1$.

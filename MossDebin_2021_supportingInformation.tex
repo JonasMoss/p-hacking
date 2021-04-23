@@ -8,6 +8,10 @@
 \usepackage{natbib}
 \usepackage{babel}
 
+
+\renewcommand\thefigure{\arabic{figure}}
+\setcounter{figure}{0}
+
 \makeatletter
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
@@ -27,7 +31,8 @@
 \include{WebAppendix_B}
 \include{WebAppendix_C}
 \include{WebAppendix_D}
-
+\include{WebAppendix_E}
+\include{WebAppendix_F}
 
 \bibliographystyle{biom}
 \bibliography{edited.bib}

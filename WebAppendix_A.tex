@@ -1,25 +1,24 @@
 \section*{Web Appendix A}
 
-\begin{proof}[Rest of the proof of Proposition 1]
-For the random effects model, let us start from
-\[
-f(x_{i}\mid\theta_{0},\tau,\sigma_{i})\propto\sum_{j=1}^{J}\rho_{j}\int1_{[\alpha_{j-1},\alpha_{j})}(u_{i})\phi(x_{i}\mid\theta_{i},\sigma_{i})\phi(\theta_{i}\mid\theta_{0},\tau)d\theta_{i}.
-\]
-To calculate the normalizing constant, substitute $1_{[\alpha_{j-1},\alpha_{j})}(u_{i})=1_{[\sigma_{i}c_{j-1},\sigma_{i}c_{j})}(x_{i})$
-first. This is done since the \emph{p}-value is calculated with respect
-to $\sigma_{i}$, not the unknown $\sqrt{\tau^{2}+\sigma_{i}^{2}}$.
-Then the normalizing constant is
-\begin{eqnarray*}
-\sum_{j=1}^{J}\rho_{j}\int1_{[\sigma_{i}c_{j-1},\sigma_{i}c_{j})}(x_{i})\phi(x_{i}\mid\theta_{i},\sigma_{i})\phi(\theta_{i}\mid\theta_{0},\tau)d\theta_{i}dx_{i} & =\\
-\sum_{j=1}^{J}\rho_{j}\int1_{[\sigma_{i}c_{j-1},\sigma_{i}c_{j})}(x_{i})\phi(x_{i}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})dx_{i} & =\\
-\sum_{j=1}^{J}\rho_{j}\left[\Phi(\sigma_{i}c_{j-1}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})-\Phi(\sigma_{i}c_{j}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})\right]
-\end{eqnarray*}
-Use that,
-\[
-\frac{\phi(x_{i}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})1_{[\alpha_{j-1},\alpha_{j})}(u_{i})}{\Phi(\sigma_{i}c_{j-1}\mid\theta,\sqrt{\tau^{2}+\sigma_{i}^{2}})-\Phi(\sigma_{i}c_{j}\mid\theta,\sqrt{\tau^{2}+\sigma_{i}^{2}})}=\phi_{[\sigma_{i}c_{j},\sigma_{i}c_{j-1})}(x_{i}\mid\theta,\sqrt{\tau^{2}+\sigma_{i}^{2}}),
-\]
-and we are done.
-%\[
-%\sum_{j=1}^{J}\rho_{j}\left[\Phi(c_{j-1}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})-\Phi(c_{j}\mid\theta_{0},\sqrt{\tau^{2}+\sigma_{i}^{2}})\right].
-%\]
-\end{proof}
+\begin{table}[ht]
+    \caption{Overview of the quantities used in the paper}
+    \label{allQuantities}
+    \centering
+    \begin{tabular}{l|p{13cm}}
+    {\bf Quantity} & {\bf Description} \\
+    \hline
+    $x_i$ & The result of a specific study. Without publication bias or \textit{p}-hacking it is drawn from a distribution $\phi(x_i \mid \theta_i, \sigma_i)$, due to publication bias or \textit{p}-hacking it is drawn from a distribution $f(x_i \mid \theta_i, \sigma_i)$.\\
+    $\phi(x_{i}\mid\theta_{i},\sigma^2_{i})$ & The original distribution of $x_i$, prior to publication bias or \textit{p}-hacking.\\
+    $f(x_i \mid \theta_i, \sigma_i)$ & The distribution of $x_i$ after the transformation due to publication bias or $p$-hacking.\\
+    $\theta_i$ & The parameter of interest in the meta-analysis, generally the effect size. In a fixed effect meta-analysis it is constant among the studies ($\theta_i = \theta$, $\forall i$), in a random effect meta-analysis it is normally distributed with mean $\theta_0$ and variance $\tau^2$. In the latter case, the target of the meta-analysis is $\theta_0$.\\
+    $\sigma^2_i$ & Variance within the study. Treated as known, as it is common in the meta-analysis literature.\\
+    $\theta_0$ & The mean of the effect size distribution (the distribution of $\theta_i$). Only relevant for random effect meta-analysis. \\
+    $\tau^2$ & The scale parameter for the distribution of $\theta_i$.  Only relevant for random effect meta-analysis. \\
+    $u_i$ & The $p$-value obtained in the $i$-th study, i.e., the $p$-value associated with $x_i$.\\
+    $w(u_i)$ & The selection probability. This is the probability that a study with $p$-value $u_i$ is published. We propose a step function that assumes the value $\rho_1$ if $u_i$ is smaller than $\alpha_1 = 0.025$, $\rho_2$ if $u_i$ is between $\alpha_1 =0.025$ and $\alpha_2 = 0.05$, and $\rho_3$ if $u_i$ is larger than $\alpha_2 =0.05$.\\
+    $\alpha$ & Significance level.\\
+    $\phi_\alpha(x_{i}\mid\theta_{i},\sigma^2_{i})$ & Gaussian truncated in a way so that the $p$-value $u_i$ associated to the study becomes smaller than $\alpha$.\\
+    $\omega(\alpha)$ & The mixing probability distribution used in the $p$-hacking model. For any significance level $\alpha$, $\omega(\alpha)$ is the probability that the researcher $p$-hacks her study to this level. We propose a discrete distribution in which the probability is $\pi_1$ for $p$-hacking the study at level $\alpha_1 = 0.025$, $\pi_2$ at level $\alpha_2 = 0.05$, and $\pi_3$ to not $p$-hack the study ($\alpha_3 = 1$). Since $\omega(\alpha)$ is a distribution,  $\pi_1 + \pi_2 + \pi_3 = 1$. \\
+    \hline
+    \end{tabular}
+\end{table}

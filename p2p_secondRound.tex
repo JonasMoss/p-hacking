@@ -21,7 +21,7 @@ by J.\ Moss and R.\ De Bin}
 
 \vspace{0.5cm}
 
-\noindent We thank you for the renewed opportunity to revise our paper. We attach a copy of the new  version of the paper together with a commentary on the points for which the Associate Editor and the Referee asked more clarification or added in the second review.
+\noindent We thank you for the renewed opportunity to revise our paper. We attach a copy of the new  version of the paper together with a commentary on the points for which the Associate Editor and the referee asked more clarification or added in the second review.
 
 
 \vspace{0.3cm}
@@ -47,7 +47,7 @@ Riccardo De Bin \\
 
 {\bf COMMENTARY} \\
 
-We are grateful for the further comments of the Associate Editor and the Referee which led to an improved version of our paper. We hope to have clarified all remaining issues and that this new version is acceptable for publication in Biometrics.
+We are grateful for the further comments of the Associate Editor and the referee which led to an improved version of our paper. In order to maintain the length of the manuscript acceptable, we included most of the additional work in the Supplementary Material. We hope to have clarified all remaining issues and that this new version is acceptable for publication in Biometrics.
 
 \vspace{2cm}
 
@@ -59,19 +59,22 @@ ASSOCIATE EDITOR
 
 \item \emph{``The connection of selection bias and p-hacking to the selection model or the mixture model has not been clearly explained. I think this is partly due to the use of implicit relationship between $u$ and $x$, $\alpha$ and $w(\alpha)$, and to the less extend $u$ and $\alpha$. It is important to at least to use an example to illustrate how they are related to each other. It is better if a clearly defined relationship is spelled out.''}
 
-We added more information on these points in Section 2.4, explaining the relationships between the quantities ($u_i$ is the p-value associated with $x_i$, $\omega(\alpha)$ the distribution of $\alpha$). In particular, as an example, we described the situation in the ideal cases (no publication bias and no p-hacking), and contrasted to the cases under the two models.\\
+As a consequence of the choice of only using Gaussian distributions, we could simplify the formulas throughout the manuscript, for example removing the dependencies on $\eta_i$, and we reformulated $\omega$ by using $1(\alpha = \alpha_j)$ instead of $1_{[0,\alpha_j)}$. The new formulations should make the paper easier to read and the relationships between the quantities mentioned by the Associate Editor more clear.
+
+Aiming at further clarifying the quantities in use and, indirectly, the relationships between them, we also added two Web Appendix: Web Appendix A, in which we summarised them in a table, and Web Appendix D, in which the selection effect of publication bias and $p$-hacking are related to the corresponding models through an example. 
+
+As a further attempt of improving the manuscript's clarity, we removed the last sentence of Section 2.5, which was quite cryptic, and substituted it with a note to the last formula of Section 2.4\\
 
 
 \item \emph{``In contrast to the previous comment, another issue is that some simple ideas and facts were verbosely explained. The authors need to remove such repetitions throughout the paper and keep exposition concise. As an example, lines 7-10 on page 3, ``This paper\dots bias and p-hacking'' maybe simplified as ``This paper aims to recover the true data-generation model $f^*(x_i \mid \theta_i , \eta_i)$ that has been transformed by the publication bias and p-hacking.'' Or ``This paper corrects the bias due to the transformation of the true data-generation model $f^*(x_i \mid \theta_i , \eta_i )$ by the publication bias and p-hacking.'' ''}
 
 We tried to make our exposition more concise. In particular:
 \begin{itemize}
-    \item we substituted the sentence mentioned in this comment with the latter proposal;
-    \item we shortened the comment on Hedges (1984)'s version of $w(u_i)$;
-    \item we removed some repetitions across the text, mainly in Section 2.3.
+    \item We substituted the sentence mentioned in this comment with the latter proposal.
+    \item We shortened the comment on Hedges (1984)'s version of $w(u_i)$.
+    \item We removed some repetitions across the text, mainly in Section 2.3.
 \end{itemize}
 \vspace{11pt}
-
 
 \item \emph{``A few technical issues:
 \begin{itemize}
@@ -80,14 +83,14 @@ of the article to remove ambiguity around the result.
 \end{itemize}
 }
 
-We added the proof of the fixed effect model and referred to a new Web Appendix for the similar proof of the random effect model.
+We added the proof of the fixed effect model and referred to a new Web Appendix (Web Appendix B) for the similar proof of the random effect model.
 
 \emph{\begin{itemize}
 \item Line -3 on Page 3, write $f(x_i \mid \theta_0, \sigma_i^2 + \tau_2)$ either as $f(x_i \mid \theta_0, \sigma_i^2, \tau^2)$ if you want to keep it general or as $N(\theta_0, \sigma_i^2 + \tau^2 )$ if you want to make it specific.
 \end{itemize}
 }
 
-Thanks, this comment clarifies a previous Referee's concern. Following the Referee's suggestion, we only considered the Gaussian case and therefore we used $N(\theta_0, \sigma_i^2 + \tau^2 )$.
+Thanks, this comment clarifies a previous referee's concern. Following the referee's suggestion, we only considered the Gaussian case and therefore we used $N(\theta_0, \sigma_i^2 + \tau^2 )$.
 
 \emph{\begin{itemize}
 \item Line 11 on page 4, change the expression to $p(s = 1 \mid x_i)f^*(x_i)/p(s = 1)$ to avoid misinterpretation.
@@ -101,21 +104,21 @@ Right, we corrected as suggested.
 \end{itemize}
 }
 
-In the new version that integral is removed. It is actually not important to describe our model, so we preferred to completely remove it to avoid confusion.
+In this version that integral is removed. It is not important to describe our model, so we preferred to completely remove it to avoid confusion.
 
 \emph{\begin{itemize}
 \item In equation (3), should $\Phi^{-1}(1 - \alpha_j)$ be $\sigma_i \Phi^{-1}(1 - \alpha_j)$? Same question in other places.
 \end{itemize}
 }
 
-True, thanks a lot for pointing that out. We edited the formulas. 
+True, thanks a lot for pointing that out! We edited the formulas. In order to keep the exposition clear, we added $\sigma_i$ to $c_j$ and use the latter extensively in this and other formulas.
 
 \emph{\begin{itemize}
 \item Lines -5 and -4 on page 7, explicitly express $f^*(x_i \mid \theta_i, \eta_i, u_i)$ in terms of $f^*(x_i \theta_i, \eta_i)$ and $u_i$, and $f_\alpha^*(x_i \mid \theta_i, \eta_i, u_i)$ in terms of $f^*(x_i \theta_i, \eta_i)$, $u_i$, and $\alpha$. What is $w(\alpha \mid u_i, \eta_i)$? You may explain using an example.
 \end{itemize}
 }
 
-As suggested, we display the formula of the truncated normal, so it is more clear the relationship between $\omega$ and $\alpha$. The newly added proof of Proposition 1 should also help relating $u_i$ to $w(u_i)$ and $x_i$. In order to highlight more the difference between $u_i$ and $\alpha$, moreover, we reformulate $\omega$ by using $1(\alpha = \alpha_j)$ instead of $1_{(0, \alpha_{j+1})}$ to clarify that the p-hacking is done to a specific value of $\alpha$, generated from $\omega$. 
+As suggested, we display the formula of the truncated normal. The newly added proof of Proposition 1 should also help relating $u_i$ to $w(u_i)$ and $x_i$, as also the new Web Appendices A, B and D. As mentioned in the answer to the first concern, we reformulate $\omega$ by using $1(\alpha = \alpha_j)$ instead of $1_{(0, \alpha_{j})}$ to clarify that the p-hacking is done to a specific value of $\alpha$, generated from $\omega$. We also removed redundant dependencies to make the formulas easier to read.
 
 
 \emph{\begin{itemize}
@@ -123,7 +126,7 @@ As suggested, we display the formula of the truncated normal, so it is more clea
 \end{itemize}
 }
 
-We clarified that $u_i$ is the p-value associated to a study with statistic $x_i$. We also added the subscript $i$ to $u$ to make the relationship more clear.
+We clarified that $u_i$ is the p-value associated to the study in which $x_i$ is observed. We also added the subscript $i$ to $u$ to make the relationship more clear.
 
 \end{enumerate}
 
@@ -142,31 +145,31 @@ Right, thanks for pointing it out. We corrected the reference.\\
 
 \emph{Specifically, ``The results of this paper will be presented for normal densities, but they hold for any distribution that satisfies mild conditions (see Section 5 and Web Appendix A).'' If the authors insist to include non-normal cases, these mild conditions should be explicitly listed; I didn't find these conditions in Section 5 and Web Appendix A. Also, at least some worked examples should be presented (if the main content is running out of space, the results could be presented in the Supplementary Materials). Can the R package ``publipha'' developed by the authors deal with non-normal cases? From a practical perspective, many real-world meta-analyses have binary outcomes (e.g., those estimating odds ratios); can the f() be probability mass functions (e.g., binomial)? I do hope that these assumptions should be driven from practical problems, instead of just adding statistical complexity.''}
 
-Rewriting the manuscript by only considering the normal case actually improved the readability, so we are grateful that the Referee insisted on this point. As she/he suggested, in the new version we only focused on Gaussian distributions. About \texttt{publipha}, ADD SENTENCE AFTER FIGURING THAT OUT WITH JONAS.\\
+Rewriting the manuscript by only considering the normal case actually improved the readability, so we are grateful that the referee insisted on this point. As she/he suggested, in the new version we only focused on Gaussian distributions. About \texttt{publipha}, the current version only implements the normal case, which is a further argument to follow the Referee's suggestion of focusing on the Gaussian case only.\\
 
 \item \emph{``Again, although the authors responded that it has been changed, I still find f(x\_i $\mid$ \textbackslash theta\_0, \textbackslash sigma\_i\^{}2 + \textbackslash tau\^{}2) incorrect (the 3rd line from the bottom on page 4). This notation for the marginal distribution is based on the conception of normal densities, and is not true for general cases. Simply suppose that f() is a t-distribution (with relatively large degrees of freedom, so that it should be close to, but not exactly equal to, normal, and should satisfy the “mild conditions” mentioned by the authors). As the random effects are assumed to be normal, \textbackslash theta\_i \textbackslash\ sim N(\textbackslash theta\_0, \textbackslash tau\^{}2), the marginal distribution is the integral of the normal and t densities, which is clearly not in the t family, so that it should not be denoted by f(x\_i $\mid$ \textbackslash theta\_0, \textbackslash sigma\_i\^{}2 + \textbackslash tau\^{}2).''}
 
-We misread the Referee's comment to the last version of the manuscript and only corrected the symbol of the variance. We apologise for missing the second part of the original comment, the Referee is obviously right and in this new version we substituted $f$ with $N$, as, following her/his suggestion, we now focus on the Gaussian case.\\
+We misread the Referee's comment to the last version of the manuscript and only corrected the symbol of the variance. We apologise for missing the second part of the original comment, the referee is obviously right and in this new version we substituted $f$ with $N$, as, following her/his suggestion, we now focus on the Gaussian case.\\
 
 
 \item \emph{``Page 12, I still think sensitivity analyses are strongly needed, which could be presented in the Supplementary Materials due to space limit in the main content. (To save space, the authors could remove the ``[Table x / Figure x about here]''.) The priors should be more explicitly specified. Specifically, ``We use standard normal priors for \textbackslash theta\_0, a standard half normal prior for \textbackslash tau, and, in the p-hacking model, a uniform Dirichlet prior for \textbackslash pi.'' Give the hyper-parameters of the priors. The heterogeneity parameter \textbackslash tau is critical in Bayesian meta-analysis, and many studies have shown that it could substantially impact the meta-results (e.g., \url{https://doi.org/10.1093/ije/dys041}). Besides the half-normal prior, many people also use uniform prior for \textbackslash tau and inverse gamma for \textbackslash tau\^{}2. Because of the nature of the selection models, it is usually hard for practitioners to intuitively interpret the underlying parameters and thus specify informative priors based on their experience. Therefore, non- or weakly-informative priors are the only choices in many cases, and it is important to check the impact of these priors to see if they are really ``weakly-informative''.''}.
 
-As suggested by the Referee we added a sensitivity analysis, in which we repeated our simulations by substituting our priors with those suggested by the Referee. We reported the results in the Web Appendix (Web Appendix B), and added a sentence in the text to point at them. The numbers are very similar, which is quite reassuring.\\
+As suggested by the referee we added a sensitivity analysis, in which we repeated our simulations by substituting our priors with those suggested by the referee. We reported the results in a new Web Appendix (Web Appendix E), and added a sentence in the text to point at them. The numbers are very similar to the previous ones, which is quite reassuring.\\
 
 
 \item \emph{``Page 12, I just notice that the simulation studies were based on only 100 replicates. I was wondering if the proposed model is time-consuming for implementation? Given that the number of replicates was relatively small, the authors should report the Monte Carlo standard errors (or their maximum values across simulation settings) for the results in the corresponding tables. For example, in Table 1, it is unclear to me whether a difference of 0.06 in the estimate of \textbackslash theta was truly due to p-hacking or publication bias, or it was just due to Monte Carlo errors.''}
 
-The whole simulation study took around one week on a laptop with i7-4790 3,6 ghz, 4 cores, 8 gb of ram. We could use a supercomputer and have additional replications, but we thought that the main point is already clear with 100 iterations. About the Monte Carlo error, they are those reported among brackets. We guiltily missed to specify this in the captions, so it is not surprising that the Monte Carlo error was not identified. We corrected that by adding the information.
+In order to address the referee's concern we increased the number of replicates to $N=1000$. It took about one week on a laptop with i7-4790 3,6 ghz, 4 cores, 8 gb of ram. The number that we obtained are very similar to those of the original table, supporting the idea that the differences are substantial and not due to Monte Carlo errors. \\
 
 
 \item \emph{``Throughout Web Appendix A, should “identified” be “identifiable”?''}
 
-Correct, thanks for pointing it out. We replaced the word in the whole Web Appendix.
+Correct, thanks for pointing it out. We replaced the word in the whole Web Appendix. \\
 
 
 \item \emph{``For consistency with the main content, in proportion A in Web Appendix A, should ``[a\_i, a\_\{i+1\}]'' and ``[a\_i, a\_\{i+1\})'' in the subscript of the density f() be ``(a\_i, a\_{i+1}]''?''}
 
-We apologise for the confusion, we now chose the form ``[a\_i, a\_\{i+1\})'' and used it consistently throughout the manuscript.
+We apologise for the confusion, we have now chosen the form ``[a\_j, a\_\{j+1\})'' and used it consistently throughout the manuscript.
 
 \end{itemize}
 
