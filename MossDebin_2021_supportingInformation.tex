@@ -8,6 +8,21 @@
 \usepackage{natbib}
 \usepackage{babel}
 
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\theoremstyle{plain}
+\newtheorem{thm}{\protect\theoremname}
+\theoremstyle{plain}
+\newtheorem{lem}[thm]{\protect\lemmaname}
+
+\makeatother
+
+\usepackage{babel}
+\providecommand{\lemmaname}{Lemma}
+\providecommand{\theoremname}{Theorem}
+
 
 \renewcommand\thefigure{\arabic{figure}}
 \setcounter{figure}{0}
@@ -33,7 +48,7 @@
 \include{WebAppendix_D}
 \include{WebAppendix_E}
 \include{WebAppendix_F}
-
+\include{WebAppendix_G}
 \bibliographystyle{biom}
 \bibliography{edited.bib}
 

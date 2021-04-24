@@ -47,3 +47,27 @@ see the $\mathtt{R}$ file $\texttt{translating.R}$ for more details.
 of the \emph{p-}hacking model.}
 
 \end{figure}
+
+The publication bias model and the \emph{p}-hacking models are equivalent
+under the fixed effects meta-analysis model, as formalized by the
+following Lemma.
+\begin{lem}
+\label{lem:equivalence}Let $\{\sigma_{i}\}_{i=1}^{n}$ be
+a collection of standard deviations and $\theta\in\mathbb{R}$ be
+an underlying mean. Then there is a bijective function $g(\pi)=\pi^{\star}$
+so that $\prod f_{\textrm{ph}}(x_{i}\mid\theta,\sigma_{i},\pi)=\prod f_{\textrm{pb}}(x_{i}\mid\theta,\sigma_{i},g(\pi))$
+for any collection $\{x_{i}\}_{i=1}^{n}$ of observations.
+\end{lem}
+
+\begin{proof}
+It suffices to show there is a bijective function function $g(\pi)=\pi^{\star}$
+so that $f_{\textrm{ph}}(x_{i}\mid\theta,\sigma_{i},\pi)=f_{\textrm{pb}}(x_{i}\mid\theta,\sigma_{i},g(\pi))$
+that is independent of $\sigma_{i}$. To do this, define $g(\pi)$
+by $\pi_{j}^{\star}=a_{j}^{\star}\sum_{i=j}^{J}\frac{\pi_{j}}{a_{j}}$
+to make a bijective function between $\pi$ and $\pi^{\star}$. Now
+observe that both $a_{j}^{\star}$ and $a_{j}$ are independent of
+$\sigma_{i}$ when $\theta$ is fixed. Thus $g(\pi)$ is independent
+of $\sigma_{i}$ and the proof is done.
+\end{proof}
+You may use this lemma to transform the $\pi$s on the \emph{p}-hacking
+form into $\pi^{\star}$ on the publication bias form and vice versa. 

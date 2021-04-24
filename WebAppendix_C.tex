@@ -1,33 +1,34 @@
 \section*{Web Appendix C}
 
-As mentioned in Section 2, any \textit{p}-hacking model can be written on the form of a selection model. Observe that
-\begin{eqnarray*}
-\int_{[0,1]}f_\alpha^{\star}(x_{i}\mid\theta_{i},\sigma^2_{i}, u_i)d\omega(\alpha) & = & \int_{[0,1]}f(x_{i}\mid\theta_{i})P(u_i\in\left[0,\alpha\right]\mid\theta_{i},\sigma^2_{i})^{-1}d\omega(\alpha)\\
- & = & f(x_{i}\mid\theta_{i})\int_{[0,u_i)}P(u_i\in\left[0,\alpha\right]\mid\theta_{i},\sigma^2_{i})^{-1}d\omega(\alpha).
-\end{eqnarray*}
-where $f_\alpha^{\star}$ is the density $f^{\star}$ truncated so that the \textit{p}-value associated to $x_i$, $u_i$, lies in the interval $\left[0,\alpha\right)$. This is a publication bias model if $$h(u_i)=\int_{[0,u_i]}P(u_i\in\left[0,\alpha\right]\mid\theta_{i},\sigma^2_{i})^{-1}d\omega(\alpha)$$ is bounded for each $u_i$ and $h(u_i)$ is independent of $\theta_{i},\sigma^2_{i}$. While $h(u_i)$ can be bounded, it is typically dependent of $\theta_{i},\sigma^2_{i}$, with the fixed effect model under complete selection for significance being a notable exception.
+As mentioned in Section 2, any \textit{p}-hacking model can be written on the form of a selection model. In this case, the selection function depends in general on the effect size, violating the model assumptions. Note that this fact is shown here in broad generality, for a general original distribution f. The main text only consider the Gaussian case, which allows simplifications that can remove that dependency (fixed effect meta-analysis). Note that here $\eta_i$ is a vector of nuisance parameter, which includes $\sigma_i^2$ in the Gaussian case.
 
-On the other hand, any selection model $f(x_{i};\theta_{i},\sigma^2_{i})\rho(u_i)$ with $$I =\int f(x;\theta_{i},\sigma^2_{i})\rho(u_i)du_i<\infty$$ can be written as a mixture model. For then there is a finite measure $d\omega(\alpha;\theta_{i},\sigma^2_{i})$ satisfying 
-\[
-\rho(u_i)=\int_{[0,u_i)}\frac{1}{P(u_i\in\left[0,\alpha\right)\mid\theta,\sigma^2)}d\omega(\alpha;\theta_{i},\sigma^2_{i})
-\]
-Just take $d\omega(\alpha;\theta_{i},\sigma^2_{i})=d\rho(\alpha)P(u_i\in\left[0,\alpha\right)\mid\theta_{i},\sigma^2_{i})$, where $d\rho(\alpha)$ is defined by $\int_{0}^{u_i}d\rho(\alpha)=\rho(u_i)$. The size of the measure is
+Observe that
 \begin{eqnarray*}
-\int_{0}^{1}d\omega(\alpha;\theta_{i},\sigma^2_{i}) & = & \int_{0}^{1}P(u_i\in\left[0,\alpha\right)\mid\theta_{i},\sigma^2_{i})d\rho(\alpha)\\
- & = & \int_{0}^{1}f(u_i;\theta_{i},\sigma^2_{i})\int_{0}^{u_i}d\rho(\alpha)du_i\\
+\int_{[0,1]}f_\alpha^{\star}(x_{i}\mid\theta_{i},\eta_{i})d\omega(\alpha) & = & \int_{[0,1]}f(x_{i}\mid\theta_{i})P(u_i\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})^{-1}d\omega(\alpha)\\
+ & = & f(x_{i}\mid\theta_{i})\int_{[0,u_i)}P(u_i\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})^{-1}d\omega(\alpha).
+\end{eqnarray*}
+where $f_\alpha^{\star}$ is the density $f^{\star}$ truncated so that the \textit{p}-value associated to $x_i$, $u_i$, lies in the interval $\left[0,\alpha\right)$. This is a publication bias model if $$h(u_i)=\int_{[0,u_i]}P(u_i\in\left[0,\alpha\right]\mid\theta_{i},\eta_{i})^{-1}d\omega(\alpha)$$ is bounded for each $u_i$ and $h(u_i)$ is independent of $\theta_{i},\eta_{i}$. While $h(u_i)$ can be bounded, it is typically dependent of $\theta_{i},\eta_{i}$, with the fixed effect model under complete selection for significance being a notable exception.
+
+On the other hand, any selection model $f(x_{i};\theta_{i},\eta_{i})\rho(u_i)$ with $$I =\int f(x;\theta_{i},\eta_{i})\rho(u_i)du_i<\infty$$ can be written as a mixture model. For then there is a finite measure $d\omega(\alpha;\theta_{i},\eta_{i})$ satisfying 
+\[
+\rho(u_i)=\int_{[0,u_i)}\frac{1}{P(u_i\in\left[0,\alpha\right)\mid\theta,\eta)}d\omega(\alpha;\theta_{i},\eta_{i})
+\]
+Just take $d\omega(\alpha;\theta_{i},\eta_{i})=d\rho(\alpha)P(u_i\in\left[0,\alpha\right)\mid\theta_{i},\eta_{i})$, where $d\rho(\alpha)$ is defined by $\int_{0}^{u_i}d\rho(\alpha)=\rho(u_i)$. The size of the measure is
+\begin{eqnarray*}
+\int_{0}^{1}d\omega(\alpha;\theta_{i},\eta_{i}) & = & \int_{0}^{1}P(u_i\in\left[0,\alpha\right)\mid\theta_{i},\eta_{i})d\rho(\alpha)\\
+ & = & \int_{0}^{1}f(u_i;\theta_{i},\eta_{i})\int_{0}^{u_i}d\rho(\alpha)du_i\\
  & = & I
 \end{eqnarray*}
-Hence $I_{\theta,\sigma^2}d\omega'(\alpha;\theta_{i},\sigma^2_{i})$ is a probability measure. This probability measure makes 
+Hence $I_{\theta,\eta}d\omega'(\alpha;\theta_{i},\eta_{i})$ is a probability measure. This probability measure makes 
 \[
-I^{-1}f(x_{i};\theta_{i},\sigma^2_{i})\rho(u_i)=\int_{[0,1]}f_\alpha(x_{i};\theta_{i},\sigma^2_{i})d\omega'(\alpha)
+I^{-1}f(x_{i};\theta_{i},\eta_{i})\rho(u_i)=\int_{[0,1]}f_\alpha(x_{i};\theta_{i},\eta_{i})d\omega'(\alpha)
 \]
 as can be seen by the following computation,
 \begin{eqnarray*}
-I^{-1}f(x_{i};\theta_{i},\sigma^2_{i})\rho(u_i) & = & I^{-1}\int_{[0,u_i)}\frac{f(x_{i};\theta_{i},\sigma^2_{i})}{P(u_i\in\left[0,\alpha\right)\mid\theta_{i},\sigma^2_{i})}d\omega(\alpha)\\
- & = & I^{-1}\int_{[0,1]}\frac{f(x_{i};\theta,\sigma^2)1_{\left[0,\alpha\right)}(u_i)}{P(u_i\in\left[0,\alpha\right)\mid\theta_{i},\sigma^2_{i})}d\omega(\alpha)\\
- & = & I^{-1}\int_{[0,1]}f_\alpha(x_{i};\theta_{i},\sigma^2_{i})d\omega(\alpha)\\
- & = & \int_{[0,1]}f_\alpha(x;\theta_{i},\sigma^2_{i})d\omega'(\alpha)
+I^{-1}f(x_{i};\theta_{i},\eta_{i})\rho(u_i) & = & I^{-1}\int_{[0,u_i)}\frac{f(x_{i};\theta_{i},\eta_{i})}{P(u_i\in\left[0,\alpha\right)\mid\theta_{i},\eta_{i})}d\omega(\alpha)\\
+ & = & I^{-1}\int_{[0,1]}\frac{f(x_{i};\theta,\eta)1_{\left[0,\alpha\right)}(u_i)}{P(u_i\in\left[0,\alpha\right)\mid\theta_{i},\eta_{i})}d\omega(\alpha)\\
+ & = & I^{-1}\int_{[0,1]}f_\alpha(x_{i};\theta_{i},\eta_{i})d\omega(\alpha)\\
+ & = & \int_{[0,1]}f_\alpha(x;\theta_{i},\eta_{i})d\omega'(\alpha)
 \end{eqnarray*}
 
-Proposition 1 shows the form of the one-sided normal step function selection probability publication bias model when it is written as a mixture model of the form (5). But most such mixture models are not true \textit{p}-hacking models, as the mixing probabilities $\pi_{i}^{\star}$ depend on $\theta$. There is no way for the \textit{p}-hacker to know
-$\theta$, so we cannot regard the publication bias model as a \textit{p}-hacking model.
+Proposition 1 shows the form of the one-sided normal step function selection probability publication bias model when it is written as a mixture model of the form (5). But most such mixture models are not true \textit{p}-hacking models, as the mixing probabilities $\pi_{i}^{\star}$ depend on $\theta$. There is no way for the \textit{p}-hacker to know $\theta$, so we cannot regard the publication bias model as a \textit{p}-hacking model.
